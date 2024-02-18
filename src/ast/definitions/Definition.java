@@ -1,7 +1,7 @@
-package ast.definition;
+package ast.definitions;
 
 import ast.ASTNode;
-import ast.Type;
+import ast.types.Type;
 
 public interface Definition extends ASTNode {
 	

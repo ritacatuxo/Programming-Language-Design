@@ -3,10 +3,7 @@ package ast.statements;
 import java.util.ArrayList;
 import java.util.List;
 
-import ast.Statement;
-import ast.definition.Definition;
 import ast.expressions.Expression;
-import ast.statements.AbstractStatement;
 
 public class While extends AbstractStatement {
 

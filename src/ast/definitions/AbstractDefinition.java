@@ -1,4 +1,7 @@
-package ast.definition;
+package ast.definitions;
+
+import ast.AbstractASTNode;
+import ast.types.Type;
 
 public class AbstractDefinition extends AbstractASTNode implements Definition {
 

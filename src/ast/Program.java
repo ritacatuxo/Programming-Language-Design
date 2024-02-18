@@ -3,7 +3,7 @@ package ast;
 import java.util.ArrayList;
 import java.util.List;
 
-import ast.definition.Definition;
+import ast.definitions.Definition;
 
 public class Program extends AbstractASTNode {
 	

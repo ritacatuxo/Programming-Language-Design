@@ -1,12 +1,12 @@
-package ast.definition;
+package ast.expressions;
 
-public class IntLiteral extends AbstractExpression {
+public class Logical extends AbstractExpression {
 
 	private String operator; // (and-&&) / (or-||)
 	private Expression left;
 	private Expression right;
 
-	public IntLiteral(int line, int column, String operator, Expression left, Expression right) {
+	public Logical(int line, int column, String operator, Expression left, Expression right) {
 		super(line, column);
 		this.operator = operator;
 		this.left = left;

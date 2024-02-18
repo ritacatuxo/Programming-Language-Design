@@ -1,12 +1,8 @@
 package ast.statements;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ast.definition.Definition;
 import ast.expressions.Expression;
 
-public abstract class Assignment extends AbstractStatement {
+public class Assignment extends AbstractStatement {
 
     // exp = exp
     private String operator;

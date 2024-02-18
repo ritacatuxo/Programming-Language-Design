@@ -1,9 +1,6 @@
-package ast;
+package ast.statements;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ast.definition.Definition;
+import ast.ASTNode;
 
 public interface Statement extends ASTNode {
 	

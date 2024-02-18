@@ -4,10 +4,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ast.definition.Definition;
 import ast.expressions.Expression;
 
-public abstract class IfElse extends AbstractStatement {
+public class IfElse extends AbstractStatement {
 
     private Expression condition;
     private List<Statement> ifBody;

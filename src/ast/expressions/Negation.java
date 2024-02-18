@@ -1,11 +1,12 @@
-package ast.definition;
+package ast.expressions;
 
-public class IntLiteral extends AbstractExpression{
+
+public class Negation extends AbstractExpression {
 
 	private String operator; // !
 	private Expression expression;
 
-	public IntLiteral(int line, int column, String operator, Expression expression) {
+	public Negation(int line, int column, String operator, Expression expression) {
 		super(line, column);
 		this.operator = operator;
 		this.expression = expression;

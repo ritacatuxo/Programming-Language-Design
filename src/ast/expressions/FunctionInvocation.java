@@ -1,13 +1,12 @@
 package ast.expressions;
 
 
-
-import ast.statements.AbstractStatement;
+import ast.statements.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FunctionInvocation extends AbstractExpression, AbstractStatement {
+public class FunctionInvocation extends AbstractExpression implements Statement {
 
     private List<Expression> parameters; // f(a, a+b, (char)n) ...
     private Variable var; // f()

@@ -1,12 +1,8 @@
-package ast;
+package ast.statements;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ast.definition.Definition;
 import ast.expressions.Expression;
 
-public class Return extends ast.AbstractStatement {
+public class Return extends AbstractStatement {
 
     private Expression ret;
 
