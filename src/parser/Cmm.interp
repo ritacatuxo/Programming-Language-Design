@@ -5,18 +5,25 @@ null
 null
 null
 null
+null
+null
+null
 
 token symbolic names:
 null
 COMMENT
 MULTILINE_COLUMN
+ID
+INT_CONSTANT
 REAL_CONSTANT
-MANTISSA
+CHAR_CONSTANT
+WS
 CHAR_CONSTANT_ASCII
 
 rule names:
+statement
 program
 
 
 atn:
-[4, 1, 5, 5, 2, 0, 7, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 3, 0, 2, 1, 0, 0, 0, 2, 3, 5, 5, 0, 0, 3, 1, 1, 0, 0, 0, 0]
+[4, 1, 8, 9, 2, 0, 7, 0, 2, 1, 7, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 2, 0, 1, 1, 0, 3, 4, 6, 0, 4, 1, 0, 0, 0, 2, 6, 1, 0, 0, 0, 4, 5, 7, 0, 0, 0, 5, 1, 1, 0, 0, 0, 6, 7, 5, 8, 0, 0, 7, 3, 1, 0, 0, 0, 0]

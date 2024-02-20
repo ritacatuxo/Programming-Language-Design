@@ -21,9 +21,6 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
         return parameters;
     }
 
-    public void setParameters(List<Expression> parameters) {
-        this.parameters = parameters;
-    }
 
     public ast.expressions.Variable getVar() {
         return var;
