@@ -1,32 +1,40 @@
 grammar Cmm;
 
 
+
+/************* EXPRESSIONS ****************/
+
 expression: '(' type ')' expression // Cast
           | '-' expression // UnaryMinus
           | ('!') expression // Arithmetic
           | expression ('*'|'/'|'%') expression // Arithmetic
           | expression ('+'|'-') expression // Arithmetic
-          | expression ('>'|'>='|'<='|'!='|'==') expression // Arithmetic
+          | expression ('>'|'<'|'>='|'<='|'!='|'==') expression // Arithmetic
           | expression ('&&'|'||') expression //Arithmetic
           | expression '.' ID  // FieldAccess (ID is the field)
           | expression '[' expression ']' // Indexing
           | function_invocation
           | expression ('and'|'or') expression // Logical
-          | expression '==' expression // Comparation - WRONG
+          | expression '.' 'equals' '(' expression ')' ';' // Comparation
           | ID // Variable
           | INT_CONSTANT //  Intliteral
           | CHAR_CONSTANT // CharLiteral
           | REAL_CONSTANT // DoubleLiteral
           ;
 
-function_invocation: ID '(' (expression | expression (',' expression)*)? ')' // FunctionInvocation - put it here?
+function_invocation: ID '(' (expression | expression (',' expression)*)? ')' ';'// FunctionInvocation
 ;
+
+
+
+
+/************* STATEMENTS ****************/
 
 statement: 'while' '(' expression ')' block // While
          | 'if' '(' expression ')' block ('else' block)? // IfElse
          | 'read' expression // Read
          | 'write' expression // Write
-         | expression '=' expression // Assignment
+         | expression '=' expression ';'// Assignment
          | function_invocation
          | 'return' expression ';' // Return
          ;
@@ -35,20 +43,48 @@ block: statement
      | '{' statement* '}'
      ;
 
+
+
+
+
+/************* TYPES ****************/
+
 type:
+    | 'int'
+    | 'double'
+    | 'char'
+    | 'void'
+    | type '['INT_CONSTANT']' ('['INT_CONSTANT']')* ID ';'// Array
+    | 'struct' '{' (type ID ';') (type ID ';')*  '}' ID ';'
     ;
 
 
-program: CHAR_CONSTANT_ASCII
+
+
+/************* DEFINITION ****************/
+
+varDefinition: type ID (',' ID)* ';'
+             ;
+
+
+
+// deberia sacar lo de los params a otro?
+functionDefinition: type ID '(' (type ID | type ID (',' type ID)*)? ')' '{' varDefinition* statement*'}'
+                  ;
+
+
+/************* PROGRAM ****************/
+
+program: (varDefinition|functionDefinition)*
        ;
 
-// One-line comments starting with //
-COMMENT: '//' .*? ('\n'| '\r' | EOF) -> skip
-       ;
 
-// Multiple-line comments starting with /* and ending with */
-MULTILINE_COLUMN: '/*' .*? '*/' -> skip
-                ;
+
+
+
+/************* LEXER ****************/
+
+
 
 fragment
 LETTER: [a-zA-Z]
@@ -102,6 +138,15 @@ CHAR_CONSTANT: '\'' . '\''
                    |'\'\\t\''
                    ;
 
+
+
+// One-line comments starting with //
+COMMENT: '//' .*? ('\n'| '\r' | EOF) -> skip
+       ;
+
+// Multiple-line comments starting with /* and ending with */
+MULTILINE_COLUMN: '/*' .*? '*/' -> skip
+                ;
 
 //white spaces
 WS: [ \t\n\r]+ -> skip ;

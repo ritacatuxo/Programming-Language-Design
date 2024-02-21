@@ -1,16 +1,22 @@
 package ast.types;
 
+import ast.ASTNode;
+
 // Struct {
 //     int field; <--
 // } structName;
-public class RecordField {
+public class RecordField implements ASTNode {
 
+    private int line;
+    private int column;
     private Type type;
     private String fieldName;
 
-    public RecordField(Type type, String fieldName) {
+    public RecordField(Type type, String fieldName, int line, int column) {
         this.type = type;
         this.fieldName = fieldName;
+        this.line = line;
+        this.column = column;
     }
 
     public Type getType() {
@@ -27,5 +33,15 @@ public class RecordField {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    @Override
+    public int getLine() {
+        return 0;
+    }
+
+    @Override
+    public int getColumn() {
+        return 0;
     }
 }
