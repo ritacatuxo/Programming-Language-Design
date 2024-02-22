@@ -6,23 +6,21 @@ grammar Cmm;
 
 expression: '(' type ')' expression // Cast
           | '-' expression // UnaryMinus
-          | ('!') expression // Arithmetic
+          | '!' expression // Arithmetic
           | expression ('*'|'/'|'%') expression // Arithmetic
           | expression ('+'|'-') expression // Arithmetic
-          | expression ('>'|'<'|'>='|'<='|'!='|'==') expression // Arithmetic
-          | expression ('&&'|'||') expression //Arithmetic
+          | expression ('>'|'<'|'>='|'<='|'!='|'==') expression // Comparison
+          | expression ('&&'|'||') expression //logical
           | expression '.' ID  // FieldAccess (ID is the field)
           | expression '[' expression ']' // Indexing
           | function_invocation
-          | expression ('and'|'or') expression // Logical
-          | expression '.' 'equals' '(' expression ')' ';' // Comparation
           | ID // Variable
           | INT_CONSTANT //  Intliteral
           | CHAR_CONSTANT // CharLiteral
           | REAL_CONSTANT // DoubleLiteral
           ;
 
-function_invocation: ID '(' (expression | expression (',' expression)*)? ')' ';'// FunctionInvocation
+function_invocation: ID '(' (expression | expression (',' expression)*)? ')'// FunctionInvocation
 ;
 
 
@@ -32,10 +30,10 @@ function_invocation: ID '(' (expression | expression (',' expression)*)? ')' ';'
 
 statement: 'while' '(' expression ')' block // While
          | 'if' '(' expression ')' block ('else' block)? // IfElse
-         | 'read' expression // Read
-         | 'write' expression // Write
+         | 'read' expression ';' // Read
+         | 'write' expression (',' expression)*';'// Write
          | expression '=' expression ';'// Assignment
-         | function_invocation
+         | function_invocation ';'
          | 'return' expression ';' // Return
          ;
 
