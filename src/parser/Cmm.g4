@@ -4,7 +4,7 @@ grammar Cmm;
 
 /************* EXPRESSIONS ****************/
 
-expression: '(' type ')' expression // Cast
+expression: '(' primitive_type ')' expression // Cast
           | '-' expression // UnaryMinus
           | '!' expression // Arithmetic
           | expression ('*'|'/'|'%') expression // Arithmetic
@@ -30,7 +30,7 @@ function_invocation: ID '(' (expression | expression (',' expression)*)? ')'// F
 
 statement: 'while' '(' expression ')' block // While
          | 'if' '(' expression ')' block ('else' block)? // IfElse
-         | 'read' expression ';' // Read
+         | 'read' expression (',' expression)*';' // Read
          | 'write' expression (',' expression)*';'// Write
          | expression '=' expression ';'// Assignment
          | function_invocation ';'
@@ -47,27 +47,37 @@ block: statement
 
 /************* TYPES ****************/
 
-type:
-    | 'int'
-    | 'double'
-    | 'char'
-    | 'void'
-    | type '['INT_CONSTANT']' ('['INT_CONSTANT']')* ID ';'// Array
-    | 'struct' '{' (type ID ';') (type ID ';')*  '}' ID ';'
+type: primitive_type
+    | void_type
+    | array
+    | struct
     ;
 
 
+primitive_type: 'int'
+              | 'double'
+              | 'char'
+              ;
 
+
+void_type: 'void'
+         ;
+
+array: primitive_type '['INT_CONSTANT']' ('['INT_CONSTANT']')*
+     ;
+
+struct: 'struct' '{' varDefinition+  '}'
+      ;
 
 /************* DEFINITION ****************/
 
-varDefinition: type ID (',' ID)* ';'
+varDefinition: primitive_type ID (',' ID)* ';'
              ;
 
 
 
 // deberia sacar lo de los params a otro?
-functionDefinition: type ID '(' (type ID | type ID (',' type ID)*)? ')' '{' varDefinition* statement*'}'
+functionDefinition: primitive_type ID '(' (primitive_type ID | primitive_type ID (',' primitive_type ID)*)? ')' '{' varDefinition* statement*'}'
                   ;
 
 
