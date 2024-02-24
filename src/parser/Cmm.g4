@@ -1,6 +1,18 @@
 grammar Cmm;
 
 
+/************* PROGRAM ****************/
+
+program: (varDefinition|functionDefinition)* mainFunction EOF
+       ;
+
+mainFunction: 'void' 'main' '(' parameters ')' '{' varDefinition* statement* '}'
+            ;
+
+
+
+
+
 
 /************* EXPRESSIONS ****************/
 
@@ -43,13 +55,10 @@ block: statement
 
 
 
-
-
 /************* TYPES ****************/
 
 type: primitive_type
-    | void_type
-    | array
+    | type '['INT_CONSTANT']' // recursive array
     | struct
     ;
 
@@ -60,32 +69,23 @@ primitive_type: 'int'
               ;
 
 
-void_type: 'void'
-         ;
-
-array: primitive_type '['INT_CONSTANT']' ('['INT_CONSTANT']')*
-     ;
-
-struct: 'struct' '{' varDefinition+  '}'
+struct: 'struct' '{' fieldDefinition+  '}'
       ;
 
-/************* DEFINITION ****************/
-
-varDefinition: primitive_type ID (',' ID)* ';'
+fieldDefinition: type ID (',' ID)* ';'
              ;
 
 
+/************* DEFINITION ****************/
 
-// deberia sacar lo de los params a otro?
-functionDefinition: primitive_type ID '(' (primitive_type ID | primitive_type ID (',' primitive_type ID)*)? ')' '{' varDefinition* statement*'}'
+varDefinition: type ID (',' ID)* ';'
+             ;
+
+
+functionDefinition: ('void'|primitive_type) ID '(' parameters ')' '{' varDefinition* statement*'}'
                   ;
-
-
-/************* PROGRAM ****************/
-
-program: (varDefinition|functionDefinition)*
-       ;
-
+parameters: (primitive_type ID | primitive_type ID (',' primitive_type ID)*)?
+          ;
 
 
 
