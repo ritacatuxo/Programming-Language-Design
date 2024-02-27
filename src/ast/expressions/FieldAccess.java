@@ -5,11 +5,11 @@ public class FieldAccess extends AbstractExpression{
 	private String fieldName; // obj.fieldName
 	private Expression expression;
 
-	public FieldAccess(int line, int column, String fieldName, Expression expression)
+	public FieldAccess(int line, int column, Expression expression, String fieldName)
 	{
 		super(line, column);
-		this.fieldName = fieldName;
 		this.expression = expression;
+		this.fieldName = fieldName;
 	}
 
 	public String getFieldName() {

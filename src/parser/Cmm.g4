@@ -1,47 +1,68 @@
 grammar Cmm;
 
+@header {
+    import ast.*;
+    import ast.definitions.*;
+    import ast.expressions.*;
+    import ast.statements.*;
+    import ast.types.*;
+}
+
 
 /************* PROGRAM ****************/
 
-program: (varDefinition|functionDefinition)* mainFunction EOF
+program returns [Program ast]:
+        (varDefinition|functionDefinition)* mainFunction EOF
        ;
 
 mainFunction: 'void' 'main' '(' parameters ')' '{' varDefinition* statement* '}'
             ;
 
 
-
-
-
-
 /************* EXPRESSIONS ****************/
 
-expression: '(' primitive_type ')' expression // Cast
-          | '-' expression // UnaryMinus
-          | '!' expression // Arithmetic
-          | expression ('*'|'/'|'%') expression // Arithmetic
-          | expression ('+'|'-') expression // Arithmetic
-          | expression ('>'|'<'|'>='|'<='|'!='|'==') expression // Comparison
-          | expression ('&&'|'||') expression //logical
-          | expression '.' ID  // FieldAccess (ID is the field)
+expression returns [Expression ast]:
+          '(' pt=primitive_type ')' e1=expression {$ast = new Cast($e1.ast.getLine(), $e1.ast.getColumn(), $pt.ast, $e1.ast);} // Cast
+          | '-' e1=expression      {$ast = new UnaryMinus($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);} // UnaryMinus
+          | '!' e1=expression      {$ast = new Negation($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}   // Arithmetic
+          | e1=expression OP=('*'|'/'|'%') e2=expression
+                        {$ast = new Arithmetic($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} // Arithmetic
+          | e1=expression OP=('+'|'-') e2=expression
+                        {$ast = new Arithmetic($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} // Arithmetic
+          | e1=expression OP=('>'|'<'|'>='|'<='|'!='|'==') e2=expression
+                        {$ast = new Comparison($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} // Comparison
+          | e1=expression OP=('&&'|'||') e2=expression
+                        {$ast = new Logical($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} //logical
+          | e1=expression '.' ID
+                        {$ast = new FieldAccess($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $ID.text);} // FieldAccess (ID is the field)
           | expression '[' expression ']' // Indexing
+                        {$ast = new Indexing($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast);} // Indexing
           | function_invocation
-          | ID // Variable
-          | INT_CONSTANT //  Intliteral
-          | CHAR_CONSTANT // CharLiteral
-          | REAL_CONSTANT // DoubleLiteral
+          | ID               {$ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text); }   // Variable
+          | IC=INT_CONSTANT  {$ast = new IntLiteral($IC.getLine(), $IC.getCharPositionInLine()+1, LexerHelper.lexemeToInt($IC.text)); } //  Intliteral
+          | CC=CHAR_CONSTANT {$ast = new CharLiteral($CC.getLine(), $CC.getCharPositionInLine()+1, LexerHelper.lexemeToChar($CC.text)); } // CharLiteral
+          | RC=REAL_CONSTANT {$ast = new DoubleLiteral($RC.getLine(), $RC.getCharPositionInLine()+1, LexerHelper.lexemeToReal($RC.text)); } // DoubleLiteral
           ;
 
-function_invocation: ID '(' (expression | expression (',' expression)*)? ')'// FunctionInvocation
+function_invocation returns [FunctionInvocation ast]:
+        ID '(' fip=funcInvParameters ')'
+            {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1, $fip.ast, $ID.text);} // FunctionInvocation
 ;
 
-
+funcInvParameters returns [List<Statement> ast = new ArrayList<Statement>()]:
+                 e2=expression {$ast.add($e2.ast);}
+                 (',' e3=expression {$ast.add($e3.ast);} )*
+                 | // epsilon so that in case there are no parameters, the list is empty
+                 ;
 
 
 /************* STATEMENTS ****************/
 
-statement: 'while' '(' expression ')' block // While
+statement returns [Statement ast]:
+           'while' '(' e1=expression ')' b1=block // While
+                        {$ast = new While($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $b1.ast);}
          | 'if' '(' expression ')' block ('else' block)? // IfElse
+
          | 'read' expression (',' expression)*';' // Read
          | 'write' expression (',' expression)*';'// Write
          | expression '=' expression ';'// Assignment

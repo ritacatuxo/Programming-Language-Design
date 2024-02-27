@@ -3,7 +3,7 @@ package ast.expressions;
 
 public class Arithmetic extends AbstractExpression {
 
-	private String operator; // + - * /
+	private String operator; // + - * / %
 	private Expression left;
 	private Expression right;
 

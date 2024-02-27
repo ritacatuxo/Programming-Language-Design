@@ -9,7 +9,7 @@ import java.util.List;
 public class FunctionInvocation extends AbstractExpression implements Statement {
 
     private List<Expression> parameters; // f(a, a+b, (char)n) ...
-    private Variable var; // f()
+    private Variable var; // f() -> f
 
     public FunctionInvocation(int line, int column, List<Expression> parameters, Variable var){
         super(line, column);

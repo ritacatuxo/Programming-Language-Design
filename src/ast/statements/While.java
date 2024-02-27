@@ -10,7 +10,7 @@ public class While extends AbstractStatement {
 	private List<Statement> body; // body
 	private Expression expression; // condition
 
-	public While(int line, int column, List<Statement> body, Expression expression) {
+	public While(int line, int column, Expression expression, List<Statement> body) {
 		super(line, column);
 		this.body = new ArrayList<Statement>(body);
 		this.expression = expression;
