@@ -13,6 +13,7 @@ grammar Cmm;
 
 program returns [Program ast]:
         (varDefinition|functionDefinition)* mainFunction EOF
+            {$ast = new Program();}
        ;
 
 mainFunction: 'void' 'main' '(' parameters ')' '{' varDefinition* statement* '}'
@@ -46,10 +47,11 @@ expression returns [Expression ast]:
 
 function_invocation returns [FunctionInvocation ast]:
         ID '(' fip=funcInvParameters ')'
-            {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1, $fip.ast, $ID.text);} // FunctionInvocation
-;
+              {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1, $fip.ast, new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.getText()));}
+        //    {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1, $fip.ast, $ID.text);} // FunctionInvocation
+        ;
 
-funcInvParameters returns [List<Statement> ast = new ArrayList<Statement>()]:
+funcInvParameters returns [List<Expression> ast = new ArrayList<Expression>()]:
                  e2=expression {$ast.add($e2.ast);}
                  (',' e3=expression {$ast.add($e3.ast);} )*
                  | // epsilon so that in case there are no parameters, the list is empty
@@ -61,54 +63,70 @@ funcInvParameters returns [List<Statement> ast = new ArrayList<Statement>()]:
 statement returns [Statement ast]:
            'while' '(' e1=expression ')' b1=block // While
                         {$ast = new While($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $b1.ast);}
-         | 'if' '(' expression ')' block ('else' block)? // IfElse
-
-         | 'read' expression (',' expression)*';' // Read
-         | 'write' expression (',' expression)*';'// Write
-         | expression '=' expression ';'// Assignment
+         | 'if' '(' e1=expression ')' b1=block
+                        {$ast = new IfElse($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $b1.ast);}
+         ('else' b2=block {(IfElse $ast).setElseBody($b2.ast);})? // IfElse
+         | 'read' e1=expression {$ast = new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}
+            (',' e2=expression {$ast = new Read($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast);} )*';' // Read
+         | 'write' e1=expression {$ast = new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}
+            (',' e2=expression {$ast = new Read($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast);})*';'// Write
+         | e1=expression '=' e2=expression {$ast = new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast);} ';' // Assignment
          | function_invocation ';'
-         | 'return' expression ';' // Return
+         | 'return' e1=expression {$ast = new Return($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}';' // Return
          ;
 
-block: statement
-     | '{' statement* '}'
+block returns [List<Statement> ast = new ArrayList<Statement>()]:
+     s1=statement {$ast.add($s1.ast);}
+     | '{' (s1=statement {$ast.add($s1.ast);})* '}'
      ;
 
 
 
 /************* TYPES ****************/
 
-type: primitive_type
-    | type '['INT_CONSTANT']' // recursive array
+type returns [Type ast]:
+    primitive_type
+    | t1=type '['IC=INT_CONSTANT']' {$ast = new ArrayType($t1.ast.getLine(), $t1.ast.getColumn(), LexerHelper.lexemeToInt($IC.text), $t1.ast);}// recursive array
     | struct
     ;
 
 
-primitive_type: 'int'
-              | 'double'
-              | 'char'
+primitive_type returns [Type ast]:
+              'int' {$ast = new IntType();} // do I need to pass line and column?
+              | 'double' {$ast = new DoubleType();}
+              | 'char' {$ast = new CharType();}
               ;
 
 
-struct: 'struct' '{' fieldDefinition+  '}'
+struct returns [RecordType ast]:
+      'struct' '{' fd=fieldDefinition+  '}' {$ast = new RecordType( 0, 0, $fd.ast);} // NOT FINISHED
       ;
 
-fieldDefinition: type ID (',' ID)* ';'
+fieldDefinition returns[List<RecordField> ast = new ArrayList<RecordField>()]:
+             t1=type ID {$ast.add(new RecordField($t1.ast.getLine(), $t1.ast.getColumn(), $t1.ast, $ID.text));}
+             (',' ID {$ast.add(new RecordField($t1.ast.getLine(), $t1.ast.getColumn(), $t1.ast, $ID.text));} )* ';'
              ;
 
 
 /************* DEFINITION ****************/
 
-varDefinition: type ID (',' ID)* ';'
+varDefinition returns [VarDefinition ast]:
+             t1=type ID {$ast = new VarDefinition($t1.ast.getLine(), $t1.ast.getColumn(), $t1.ast, $ID.text);}
+             (',' ID {$ast = new VarDefinition($t1.ast.getLine(), $t1.ast.getColumn(), $t1.ast, $ID.text);} )* ';'
              ;
 
 
-functionDefinition: ('void'|primitive_type) ID '(' parameters ')' '{' varDefinition* statement*'}'
+functionDefinition returns [FuncDefinition ast]:
+                  ('void'|pt=primitive_type) ID '(' p=parameters ')'
+                  '{' (vd=varDefinition { $varDefs = new ArrayList<VarDefinitions>(); $varDefs.add($vd.ast) } )*
+                      (s=statement { $statements = new ArrayList<Statement>(); $statements.add($s.ast) } )* '}'
+                        {$ast = new FuncDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $pt.ast, $ID.text, $p.ast, $varDefs, $statements);}
                   ;
-parameters: (primitive_type ID | primitive_type ID (',' primitive_type ID)*)?
+parameters returns [List<VarDefinition> ast = new ArrayList<VarDefinition>()]:
+          pt1=primitive_type ID {$ast.add( new VarDefinition($pt1.ast.getLine(), $pt1.ast.getColumn(), $pt1.ast, $ID.text));}
+          (',' pt2=primitive_type ID {$ast.add( new VarDefinition($pt2.ast.getLine(), $pt2.ast.getColumn(), $pt2.ast, $ID.text));} )*
+          | // epsilon in case there are no parameters
           ;
-
-
 
 
 /************* LEXER ****************/

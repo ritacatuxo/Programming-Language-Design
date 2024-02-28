@@ -5,23 +5,13 @@ import ast.expressions.Expression;
 public class Assignment extends AbstractStatement {
 
     // exp = exp
-    private String operator;
     private Expression left;
     private Expression right;
 
-    public Assignment(int line, int column, String operator, Expression left, Expression right) {
+    public Assignment(int line, int column, Expression left, Expression right) {
         super(line, column);
-        this.operator = operator;
         this.left = left;
         this.right = right;
-    }
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
     }
 
     public Expression getLeft() {

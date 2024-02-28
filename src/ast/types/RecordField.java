@@ -12,7 +12,8 @@ public class RecordField implements ASTNode {
     private Type type;
     private String fieldName;
 
-    public RecordField(Type type, String fieldName, int line, int column) {
+    public RecordField(int line, int column, Type type, String fieldName) {
+
         this.type = type;
         this.fieldName = fieldName;
         this.line = line;

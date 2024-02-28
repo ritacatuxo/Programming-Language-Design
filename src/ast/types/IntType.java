@@ -2,16 +2,17 @@ package ast.types;
 
 public class IntType extends AbstractType{
     private int value;
-    public IntType(int line, int column, int value) {
+
+    public IntType(int line, int column) {
         super(line, column);
-        this.value = value;
     }
 
-    public int getValue() {
+    // para que compile
+    public IntType() {
+        super(0, 0);
+    }
+
+    private int getInt(){
         return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
     }
 }

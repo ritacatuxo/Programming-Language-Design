@@ -6,6 +6,9 @@ public class DoubleType extends AbstractType{
         super(line, column);
         this.value = value;
     }
+    public DoubleType() {
+        super(0, 0);
+    }
 
     public double getValue() {
         return value;

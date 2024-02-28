@@ -1,4 +1,4 @@
-// Generated from D:/segundo cuatri/DLP/laboratorios/lab05/workspace lab05/src/parser/Cmm.g4 by ANTLR 4.13.1
+// Generated from C:/Users/Rita Catucho/Desktop/segundo cuatri/SDI/TRABAJO GRUPAL/workspace intellij/DLP/src/parser/Cmm.g4 by ANTLR 4.13.1
 package parser;
 
     import ast.*;

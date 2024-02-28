@@ -1,6 +1,5 @@
 package ast.statements;
 
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +11,10 @@ public class IfElse extends AbstractStatement {
     private List<Statement> ifBody;
     private List<Statement> elseBody;
 
-    public IfElse(int line, int column, Expression condition, List<Statement> ifBody, List<Statement> elseBody) {
+    public IfElse(int line, int column, Expression condition, List<Statement> ifBody) {
         super(line, column);
         this.condition = condition;
         this.ifBody = new ArrayList<Statement>(ifBody);
-        this.elseBody = new ArrayList<Statement>(elseBody);
     }
 
     public Expression getCondition() {
