@@ -3,7 +3,7 @@ package ast.types;
 import ast.ASTNode;
 
 // Struct {
-//     int field; <--
+//     int field; <-- NO SON VARDEFINITINS bc necesitan .field
 // } structName;
 public class RecordField implements ASTNode {
 
