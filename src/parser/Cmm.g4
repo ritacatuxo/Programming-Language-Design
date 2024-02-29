@@ -12,11 +12,25 @@ grammar Cmm;
 /************* PROGRAM ****************/
 
 program returns [Program ast]:
-        (varDefinition|functionDefinition)* mainFunction EOF
-            {$ast = new Program();}
+
+        {$defs = new ArrayList<Definition>)()}
+        (vd=varDefinition {$defs.add($vd.ast);}
+        | fd=functionDefinition  {$defs.add($fd.ast);} )*
+        mf=mainFunction  {$defs.add($mf.ast);}
+        EOF
+            {$ast = new Program($vd.getLine(), $vd.getcolumn(), $defs.ast);}
        ;
 
-mainFunction: 'void' 'main' '(' parameters ')' '{' varDefinition* statement* '}'
+mainFunction returns [FunctionDefinition ast]:
+            'void' main='main' '(' p=parameters ')'
+
+            // body --
+            '{' { $varDefs = new ArrayList<VarDefinitions>(); } (vd=varDefinition {$varDefs.add($vd.ast) } )* // creo l alista y lg voy añadiendo
+                { $statements = new ArrayList<Statement>();} (s=statement { $statements.add($s.ast) } )* '}'
+
+            // ast --
+                {$ast = new FuntionDefinition($main.getLine(), $main.getCharPositionInLine()+1, new VoidType($main.getLine(), $main.getCharPositionInLine()+1), $main.text, $p.ast, $varDefs, $statements);}
+
             ;
 
 
@@ -118,8 +132,8 @@ varDefinition returns [VarDefinition ast]:
 
 functionDefinition returns [FuncDefinition ast]:
                   ('void'|pt=primitive_type) ID '(' p=parameters ')'
-                  '{' (vd=varDefinition { $varDefs = new ArrayList<VarDefinitions>(); $varDefs.add($vd.ast) } )*
-                      (s=statement { $statements = new ArrayList<Statement>(); $statements.add($s.ast) } )* '}'
+                  '{' { $varDefs = new ArrayList<VarDefinitions>(); } (vd=varDefinition {$varDefs.add($vd.ast) } )* // creo la lista y lg voy añadiendo
+                      { $statements = new ArrayList<Statement>();} (s=statement { $statements.add($s.ast) } )* '}'
                         {$ast = new FuncDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $pt.ast, $ID.text, $p.ast, $varDefs, $statements);}
                   ;
 parameters returns [List<VarDefinition> ast = new ArrayList<VarDefinition>()]:
