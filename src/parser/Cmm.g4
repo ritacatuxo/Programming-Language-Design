@@ -15,18 +15,20 @@ program returns [Program ast] locals [List<Definition> defs]:
 
         (vd=varDefinition {$defs.add($vd.ast);} | fd=functionDefinition  {$defs.add($fd.ast);} )*
         mf=mainFunction  {$defs.add($mf.ast);} EOF
-            {$ast = new Program($mf.getLine(), $mf.getcolumn(), $defs.ast);}
+            {$ast = new Program(0, 0, $defs);} // program starts always in the first line and column
        ;
 
-mainFunction returns [FunctionDefinition ast] locals [List<VarDefinition> varDefs, List<Statements> statements]:
+mainFunction returns [FuncDefinition ast] locals [List<VarDefinition> varDefs, List<Statement> statements]:
             'void' main='main' '(' p=parameters ')'
 
             // body --
-            '{' (vd=varDefinition {$varDefs.add($vd.ast) } )* // creo l alista y lg voy añadiendo
-                (s=statement { $statements.add($s.ast) } )* '}'
+            '{' (vd=varDefinition {$varDefs.add($vd.ast); } )* // creo l alista y lg voy añadiendo
+                (s=statement { $statements.addAll($s.ast); } )* '}'
 
             // ast --
-                {$ast = new FuntionDefinition($main.getLine(), $main.getCharPositionInLine()+1, new VoidType($main.getLine(), $main.getCharPositionInLine()+1), $main.text, $p.ast, $varDefs, $statements);}
+                {$ast = new FuncDefinition($main.getLine(), $main.getCharPositionInLine()+1,
+                    new FunctionType($main.getLine(), $main.getCharPositionInLine()+1, $p.ast, new VoidType($main.getLine(), $main.getCharPositionInLine()+1)),
+                        $main.text, $varDefs, $statements);}
 
             ;
 
@@ -66,7 +68,6 @@ expression returns [Expression ast]:
 function_invocation returns [FunctionInvocation ast]:
         ID '(' fip=funcInvParameters ')'
               {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1, $fip.ast, new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.getText()));}
-        //    {$ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine()+1, $fip.ast, $ID.text);} // FunctionInvocation
         ;
 
 funcInvParameters returns [List<Expression> ast = new ArrayList<Expression>()]:
@@ -78,24 +79,28 @@ funcInvParameters returns [List<Expression> ast = new ArrayList<Expression>()]:
 
 /************* STATEMENTS ****************/
 
-statement returns [Statement ast]:
+statement returns [List<Statement> ast = new ArrayList<Statement>()]:
            'while' '(' e1=expression ')' b1=block // While
-                        {$ast = new While($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $b1.ast);}
-         | 'if' '(' e1=expression ')' b1=block
-                        {$ast = new IfElse($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $b1.ast);}
-         ('else' b2=block {(IfElse $ast).setElseBody($b2.ast);})? // IfElse
-         | 'read' e1=expression {$ast = new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}
-            (',' e2=expression {$ast = new Read($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast);} )*';' // Read
-         | 'write' e1=expression {$ast = new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}
-            (',' e2=expression {$ast = new Read($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast);})*';'// Write
-         | e1=expression '=' e2=expression {$ast = new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast);} ';' // Assignment
+                        {$ast.add(new While($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $b1.ast));}
+         | 'if' '(' e1=expression ')' b1=block eb=elseBody
+                        {$ast.add(new IfElse($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $b1.ast, $eb.ast));}
+         | 'read' e1=expression {$ast.add(new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast));}
+            (',' e2=expression {$ast.add(new Read($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast));} )*';' // Read
+         | 'write' e1=expression {$ast.add(new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast));}
+            (',' e2=expression {$ast.add(new Read($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast));})*';'// Write
+         | e1=expression '=' e2=expression {$ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast));} ';' // Assignment
          | function_invocation ';'
-         | 'return' e1=expression {$ast = new Return($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}';' // Return
+         | 'return' e1=expression {$ast.add(new Return($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast));}';' // Return
          ;
 
+elseBody returns[List<Statement> ast = new ArrayList<Statement>()]:
+        'else' b1=block {$ast = $b1.ast;}
+        | // epsilon
+        ;
+
 block returns [List<Statement> ast = new ArrayList<Statement>()]:
-     s1=statement {$ast.add($s1.ast);}
-     | '{' (s1=statement {$ast.add($s1.ast);})* '}'
+     s1=statement {$ast = $s1.ast;}
+     | '{' (s1=statement {$ast.addAll($s1.ast);})* '}'
      ;
 
 
@@ -141,9 +146,10 @@ varDefinition returns [VarDefinition ast]:
 
 functionDefinition returns [FuncDefinition ast] locals [List<Statement> statements, List<VarDefinition> varDefs]:
                   ('void'|pt=primitive_type) ID '(' p=parameters ')'
-                  '{' (vd=varDefinition {$varDefs.add($vd.ast) } )* // creo la lista y voy añadiendo
-                      (s=statement { $statements.add($s.ast) } )* '}' // creo la lista y voy añadiendo
-                        {$ast = new FuncDefinition($ID.getLine(), $ID.getCharPositionInLine()+1, $pt.ast, $ID.text, $p.ast, $varDefs, $statements);}
+                  '{' (vd=varDefinition {$varDefs.add($vd.ast); } )* // creo la lista y voy añadiendo
+                      (s=statement { $statements.addAll($s.ast); } )* '}' // creo la lista y voy añadiendo
+                        {$ast = new FuncDefinition($ID.getLine(), $ID.getCharPositionInLine()+1,
+                            new FunctionType($ID.getLine(), $ID.getCharPositionInLine()+1, $p.ast, $pt.ast), $ID.text, $varDefs, $statements);}
                   ;
 parameters returns [List<VarDefinition> ast = new ArrayList<VarDefinition>()]:
           pt1=primitive_type ID {$ast.add( new VarDefinition($pt1.ast.getLine(), $pt1.ast.getColumn(), $pt1.ast, $ID.text));}

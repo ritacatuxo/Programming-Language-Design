@@ -12,12 +12,10 @@ public class FuncDefinition extends AbstractDefinition{
 
     private List<Statement> statements;
     private List<VarDefinition> varDefinitions;
-    private List<VarDefinition> parameters; // tiene sentido separarlo=? creoq ue hay que quitar esto
 
 
-    public FuncDefinition(int line, int column, FunctionType functionType, String name, List<VarDefinition> parameters, List<VarDefinition> varDefinitions, List<Statement> statements) {
+    public FuncDefinition(int line, int column, FunctionType functionType, String name, List<VarDefinition> varDefinitions, List<Statement> statements) {
         super(line, column, functionType, name);
-        this.parameters = new ArrayList<VarDefinition>(parameters);
         this.statements = new ArrayList<Statement>(statements);
         this.varDefinitions = new ArrayList<VarDefinition>(varDefinitions);
     }

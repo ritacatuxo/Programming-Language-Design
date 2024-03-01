@@ -12,7 +12,5 @@ public class IntType extends AbstractType{
         super(0, 0);
     }
 
-    private int getInt(){
-        return value;
-    }
+
 }

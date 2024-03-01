@@ -2,9 +2,10 @@ package ast.expressions;
 
 public class CharLiteral extends AbstractExpression{
 
-
-    public CharLiteral(int line, int column){
+    private char value;
+    public CharLiteral(int line, int column, char value){
         super(line, column);
+        this.value = value;
     }
 
 }
