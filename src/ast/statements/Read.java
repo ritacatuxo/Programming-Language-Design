@@ -18,4 +18,9 @@ public class Read extends AbstractStatement {
     public void setExpression(Expression expression) {
         this.expression = expression;
     }
+
+    @Override
+    public String toString() {
+        return "Read " + expression;
+    }
 }

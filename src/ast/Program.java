@@ -14,9 +14,10 @@ public class Program extends AbstractASTNode {
 		this.body = new ArrayList<>(defs); //clone
 	}
 
-	public List<Definition> getbody()
-	{
-		return body;
+	@Override
+	public String toString() {
+		return "Program{" +
+				"body=" + body +
+				'}';
 	}
-
 }

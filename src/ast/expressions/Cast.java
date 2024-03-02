@@ -29,4 +29,10 @@ public class Cast extends AbstractExpression{
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
+
+	@Override
+	public String toString() {
+		return "Cast = (" + castTo + ") " + expression;
+	}
+
 }

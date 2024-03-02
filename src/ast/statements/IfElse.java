@@ -18,27 +18,14 @@ public class IfElse extends AbstractStatement {
         this.elseBody = new ArrayList<Statement>(elseBody);
     }
 
-    public Expression getCondition() {
-        return condition;
+
+    @Override
+    public String toString() {
+        return "IfElse{" +
+                "condition=" + condition +
+                ", ifBody=" + ifBody +
+                ", elseBody=" + elseBody +
+                '}';
     }
 
-    public void setCondition(Expression condition) {
-        this.condition = condition;
-    }
-
-    public List<Statement> getIfBody() {
-        return ifBody;
-    }
-
-    public void setIfBody(List<Statement> ifBody) {
-        this.ifBody = ifBody;
-    }
-
-    public List<Statement> getElseBody() {
-        return elseBody;
-    }
-
-    public void setElseBody(List<Statement> elseBody) {
-        this.elseBody = elseBody;
-    }
 }

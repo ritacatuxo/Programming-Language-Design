@@ -34,4 +34,6 @@ public class AbstractDefinition extends AbstractASTNode implements Definition {
 		return name;
 	}
 
+
+
 }

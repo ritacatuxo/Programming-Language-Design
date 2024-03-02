@@ -17,17 +17,14 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
         this.var = var;
     }
 
-    public List<Expression> getParameters() {
-        return parameters;
+    @Override
+    public String toString() {
+        String toString = "FunctionInvocation = " + var + "parameters=";
+        for (Expression exp : this.parameters) {
+            toString += exp + " - ";
+        }
+        return toString;
     }
 
-
-    public ast.expressions.Variable getVar() {
-        return var;
-    }
-
-    public void setVar(ast.expressions.Variable var) {
-        this.var = var;
-    }
 }
 

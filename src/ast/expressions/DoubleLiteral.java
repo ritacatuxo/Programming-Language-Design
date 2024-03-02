@@ -8,4 +8,10 @@ public class DoubleLiteral extends AbstractExpression{
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "DoubleLiteral{" +
+                "value=" + value +
+                '}';
+    }
 }

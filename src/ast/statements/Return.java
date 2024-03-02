@@ -11,11 +11,8 @@ public class Return extends AbstractStatement {
         this.ret = ret;
     }
 
-    public Expression getRet() {
-        return ret;
-    }
-
-    public void setRet(Expression ret) {
-        this.ret = ret;
+    @Override
+    public String toString() {
+        return "Return " + ret;
     }
 }

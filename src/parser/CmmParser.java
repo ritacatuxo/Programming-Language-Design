@@ -1,4 +1,4 @@
-// Generated from C:/Users/Rita Catucho/Desktop/segundo cuatri/DLP/laboratorios/compilador/DLP/src/parser/Cmm.g4 by ANTLR 4.13.1
+// Generated from C:/Users/Rita/Documents/RITA/universidad/tercero software/segundo cuatri/DLP/compilador/DLP/src/parser/Cmm.g4 by ANTLR 4.13.1
 package parser;
 
     import ast.*;
@@ -1093,6 +1093,9 @@ public class CmmParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class Primitive_typeContext extends ParserRuleContext {
 		public Type ast;
+		public Token i;
+		public Token d;
+		public Token c;
 		public Primitive_typeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1110,24 +1113,24 @@ public class CmmParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(248);
-				match(T__32);
-				((Primitive_typeContext)_localctx).ast =  new IntType();
+				((Primitive_typeContext)_localctx).i = match(T__32);
+				((Primitive_typeContext)_localctx).ast =  new IntType(((Primitive_typeContext)_localctx).i.getLine(), ((Primitive_typeContext)_localctx).i.getCharPositionInLine()+1);
 				}
 				break;
 			case T__33:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(250);
-				match(T__33);
-				((Primitive_typeContext)_localctx).ast =  new DoubleType();
+				((Primitive_typeContext)_localctx).d = match(T__33);
+				((Primitive_typeContext)_localctx).ast =  new DoubleType(((Primitive_typeContext)_localctx).d.getLine(), ((Primitive_typeContext)_localctx).d.getCharPositionInLine()+1);
 				}
 				break;
 			case T__34:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(252);
-				match(T__34);
-				((Primitive_typeContext)_localctx).ast =  new CharType();
+				((Primitive_typeContext)_localctx).c = match(T__34);
+				((Primitive_typeContext)_localctx).ast =  new CharType(((Primitive_typeContext)_localctx).c.getLine(), ((Primitive_typeContext)_localctx).c.getCharPositionInLine()+1);
 				}
 				break;
 			default:

@@ -28,21 +28,21 @@ public class RecordField implements ASTNode {
         this.type = type;
     }
 
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
     @Override
     public int getLine() {
-        return 0;
+        return this.line;
     }
 
     @Override
     public int getColumn() {
-        return 0;
+        return this.column;
+    }
+
+    @Override
+    public String toString() {
+        return "RecordField{" +
+                " type=" + type +
+                ", fieldName=" + fieldName +
+                '}';
     }
 }

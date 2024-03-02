@@ -10,11 +10,8 @@ public class UnaryMinus extends AbstractExpression{
 		this.exp = exp;
 	}
 
-	public Expression getExp() {
-		return exp;
-	}
-
-	public void setExp(Expression exp) {
-		this.exp = exp;
+	@Override
+	public String toString() {
+		return "UnaryMinus = -" + exp;
 	}
 }

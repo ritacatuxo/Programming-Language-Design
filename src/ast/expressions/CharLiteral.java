@@ -8,4 +8,8 @@ public class CharLiteral extends AbstractExpression{
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "CharLiteral = " + value;
+    }
 }

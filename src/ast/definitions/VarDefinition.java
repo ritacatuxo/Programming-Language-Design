@@ -16,4 +16,11 @@ public class VarDefinition extends AbstractDefinition{
     public void setOffset(int offset) {
         this.offset = offset;
     }
+
+    @Override
+    public String toString() {
+        return "VarDefinition{" +
+                "offset=" + offset +
+                '}';
+    }
 }

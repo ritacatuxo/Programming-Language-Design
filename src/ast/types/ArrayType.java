@@ -11,10 +11,15 @@ public class ArrayType extends AbstractType{
         this.type = type;
     }
 
-    public int getSize() {
-        return size;
-    }
     public Type getType() {
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return "ArrayType{" +
+                "size=" + size +
+                ", type=" + type +
+                '}';
     }
 }

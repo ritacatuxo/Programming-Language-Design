@@ -37,4 +37,9 @@ public class Arithmetic extends AbstractExpression {
 	public void setRight(Expression right) {
 		this.right = right;
 	}
+
+	@Override
+	public String toString() {
+		return "Arithmetic = " + left + operator + right;
+	}
 }

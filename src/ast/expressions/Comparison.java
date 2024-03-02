@@ -13,6 +13,11 @@ public class Comparison extends AbstractExpression{
 		this.right = right;
 	}
 
+	@Override
+	public String toString() {
+		return "Comparison = " + left + operator + right;
+	}
+
 	public String getOperator() {
 		return operator;
 	}

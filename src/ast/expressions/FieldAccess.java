@@ -27,4 +27,11 @@ public class FieldAccess extends AbstractExpression{
 	public void setExpression(Expression expression) {
 		this.expression = expression;
 	}
+
+	@Override
+	public String toString() {
+		return "FieldAccess = " +
+				fieldName + '.' +
+				expression;
+	}
 }

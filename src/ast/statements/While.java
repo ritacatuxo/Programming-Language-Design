@@ -16,13 +16,6 @@ public class While extends AbstractStatement {
 		this.expression = expression;
 	}
 
-	public List<Statement> getBody() {
-		return body;
-	}
-
-	public void setBody(List<Statement> body) {
-		this.body = body;
-	}
 
 	public Expression getExpression() {
 		return expression;
@@ -30,5 +23,13 @@ public class While extends AbstractStatement {
 
 	public void setExpression(Expression expression) {
 		this.expression = expression;
+	}
+
+	@Override
+	public String toString() {
+		return "While{" +
+				"body=" + body +
+				", expression=" + expression +
+				'}';
 	}
 }

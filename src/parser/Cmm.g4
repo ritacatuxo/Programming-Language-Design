@@ -120,9 +120,9 @@ type returns [Type ast]:
 
 
 primitive_type returns [Type ast]:
-              'int' {$ast = new IntType();} // do I need to pass line and column?
-              | 'double' {$ast = new DoubleType();}
-              | 'char' {$ast = new CharType();}
+              i='int' {$ast = new IntType($i.getLine(), $i.getCharPositionInLine()+1);} // do I need to pass line and column?
+              | d='double' {$ast = new DoubleType($d.getLine(), $d.getCharPositionInLine()+1);}
+              | c='char' {$ast = new CharType($c.getLine(), $c.getCharPositionInLine()+1);}
               ;
 
 
@@ -146,8 +146,8 @@ varDefinition returns [VarDefinition ast]:
 
 functionDefinition returns [FuncDefinition ast] locals [List<Statement> statements, List<VarDefinition> varDefs]:
                   ('void'|pt=primitive_type) ID '(' p=parameters ')'
-                  '{' (vd=varDefinition {$varDefs.add($vd.ast); } )* // creo la lista y voy añadiendo
-                      (s=statement { $statements.addAll($s.ast); } )* '}' // creo la lista y voy añadiendo
+                  '{' (vd=varDefinition {$varDefs.add($vd.ast); } )*
+                      (s=statement { $statements.addAll($s.ast); } )* '}'
                         {$ast = new FuncDefinition($ID.getLine(), $ID.getCharPositionInLine()+1,
                             new FunctionType($ID.getLine(), $ID.getCharPositionInLine()+1, $p.ast, $pt.ast), $ID.text, $varDefs, $statements);}
                   ;

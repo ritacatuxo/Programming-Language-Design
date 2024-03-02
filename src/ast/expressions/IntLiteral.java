@@ -10,4 +10,8 @@ public class IntLiteral extends AbstractExpression{
 
 	}
 
+	@Override
+	public String toString() {
+		return "IntLiteral = " + value;
+	}
 }

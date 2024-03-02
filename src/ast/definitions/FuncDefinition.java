@@ -28,4 +28,12 @@ public class FuncDefinition extends AbstractDefinition{
     public List<VarDefinition> getVarDefinitions() {
         return varDefinitions;
     }
+
+    @Override
+    public String toString() {
+        return "FuncDefinition{" +
+                "statements=" + statements +
+                ", varDefinitions=" + varDefinitions +
+                '}';
+    }
 }
