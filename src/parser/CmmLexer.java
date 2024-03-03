@@ -1,4 +1,4 @@
-// Generated from C:/Users/Rita/Documents/RITA/universidad/tercero software/segundo cuatri/DLP/compilador/DLP/src/parser/Cmm.g4 by ANTLR 4.13.1
+// Generated from C:/Users/Rita/IdeaProjects/DLP/src/parser/Cmm.g4 by ANTLR 4.13.1
 package parser;
 
     import ast.*;

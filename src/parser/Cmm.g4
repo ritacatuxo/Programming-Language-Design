@@ -111,7 +111,8 @@ block returns [List<Statement> ast = new ArrayList<Statement>()]:
 type returns [Type ast]:
     primitive_type
     | t1=type '['IC=INT_CONSTANT']'
-            {$ast = new ArrayType($t1.ast.getLine(), $t1.ast.getColumn(), LexerHelper.lexemeToInt($IC.text), $t1.ast);}// recursive array
+            { $ast = ArrayType.buildArray(Integer.parseInt(IC.text), $t1.ast); }
+            // version anterior -> {$ast = new ArrayType($t1.ast.getLine(), $t1.ast.getColumn(), LexerHelper.lexemeToInt($IC.text), $t1.ast);}// recursive array
 
     //
 
