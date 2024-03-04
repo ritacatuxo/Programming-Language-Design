@@ -13,6 +13,14 @@ public class Arithmetic extends AbstractExpression {
 		this.left = left;
 		this.right = right;
 	}
+/*
+	public static Expression arithmeticFactory(int line, int column, String operator, Expression left, Expression right)
+	{
+		if(operator.equals("%"))
+			return new Modulus(line, column, left,right);
+		else return new Arithmetic(line, column, operator, left,right);
+	}
+*/
 
 	public String getOperator() {
 		return operator;

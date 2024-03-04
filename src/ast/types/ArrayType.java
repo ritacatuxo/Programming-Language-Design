@@ -12,6 +12,30 @@ public class ArrayType extends AbstractType{
     }
 
     /**
+
+    // TG FACTORY
+    // la primera vez que lo llamamos type es un int type, the secind time
+    public static ArrayType createArray(int line, int column, int size, Type previousType){
+
+        //check if precious type is array type id so we cannot use construcor
+        if (previousType instanceof ArrayType) {
+            // take obj and insert
+
+            //iteras sobr  la larga lista de AT y
+        }
+        //go to end and connect objs. Go
+
+    }
+
+
+*/
+
+
+
+
+
+
+    /**
      * As the creation of the array is recursive, this method creates the array in the good way
      */
     public ArrayType buildArray(int size, Type type) {

@@ -14,11 +14,13 @@ grammar Cmm;
 program returns [Program ast] locals [List<Definition> defs]:
 
         (vd=varDefinition {$defs.add($vd.ast);} | fd=functionDefinition  {$defs.add($fd.ast);} )*
-        mf=mainFunction  {$defs.add($mf.ast);} EOF
-            {$ast = new Program(0, 0, $defs);} // program starts always in the first line and column
+        mf=mainFunction {$defs.add($mf.ast);} EOF
+            {$ast = new Program(0, 0, $defs);} // program starts always in the first line and column -> nadie usa este line and column asique es igual
        ;
 
-mainFunction returns [FuncDefinition ast] locals [List<VarDefinition> varDefs, List<Statement> statements]:
+
+mainFunction returns [FuncDefinition ast]
+             locals [List<VarDefinition> varDefs, List<Statement> statements]:
             'void' main='main' '(' p=parameters ')'
 
             // body --
@@ -33,6 +35,9 @@ mainFunction returns [FuncDefinition ast] locals [List<VarDefinition> varDefs, L
             ;
 
 
+
+
+
 /************* EXPRESSIONS ****************/
 
 expression returns [Expression ast]:
@@ -41,6 +46,7 @@ expression returns [Expression ast]:
           | '!' e1=expression      {$ast = new Negation($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}   // Arithmetic
           | e1=expression OP=('*'|'/'|'%') e2=expression
                         {$ast = new Arithmetic($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} // Arithmetic
+                        // antiguo -> //{$ast = new Arithmetic.arithmeticFactory($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast)}
 
           // % has its own type -> necesitas otra clase para remainder (modulus)
           // no puedes seàrarñp bc tiene la misma precedemce que los otros * /
@@ -106,19 +112,20 @@ block returns [List<Statement> ast = new ArrayList<Statement>()]:
 
 
 
+
+
 /************* TYPES ****************/
 
 type returns [Type ast]:
     primitive_type
     | t1=type '['IC=INT_CONSTANT']'
-            { $ast = ArrayType.buildArray(Integer.parseInt(IC.text), $t1.ast); }
-            // version anterior -> {$ast = new ArrayType($t1.ast.getLine(), $t1.ast.getColumn(), LexerHelper.lexemeToInt($IC.text), $t1.ast);}// recursive array
-
-    //
-
+            //{ $ast = ArrayType.buildArray(Integer.parseInt(IC.text), $t1.ast); }
+              {$ast = new ArrayType($t1.ast.getLine(), $t1.ast.getColumn(), LexerHelper.lexemeToInt($IC.text), $t1.ast);}// recursive array
 
     | struct
     ;
+
+
 
 
 primitive_type returns [Type ast]:

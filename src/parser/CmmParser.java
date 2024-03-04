@@ -1,4 +1,4 @@
-// Generated from C:/Users/Rita/IdeaProjects/DLP/src/parser/Cmm.g4 by ANTLR 4.13.1
+// Generated from C:/Users/UO284185/IdeaProjects/DLP/src/parser/Cmm.g4 by ANTLR 4.13.1
 package parser;
 
     import ast.*;
@@ -282,7 +282,7 @@ public class CmmParser extends Parser {
 			match(T__5);
 			((MainFunctionContext)_localctx).ast =  new FuncDefinition(((MainFunctionContext)_localctx).main.getLine(), ((MainFunctionContext)_localctx).main.getCharPositionInLine()+1,
 			                    new FunctionType(((MainFunctionContext)_localctx).main.getLine(), ((MainFunctionContext)_localctx).main.getCharPositionInLine()+1, ((MainFunctionContext)_localctx).p.ast, new VoidType(((MainFunctionContext)_localctx).main.getLine(), ((MainFunctionContext)_localctx).main.getCharPositionInLine()+1)),
-			                        (((MainFunctionContext)_localctx).main!=null?((MainFunctionContext)_localctx).main.getText():null), _localctx.varDefs, _localctx.statements);
+			                        (((MainFunctionContext)_localctx).main!=null?((MainFunctionContext)_localctx).main.getText():null), _localctx.varDefs.ast, _localctx.statements.ast);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1069,7 +1069,7 @@ public class CmmParser extends Parser {
 					((TypeContext)_localctx).IC = match(INT_CONSTANT);
 					setState(241);
 					match(T__22);
-					 ((TypeContext)_localctx).ast =  ArrayType.buildArray(Integer.parseInt(IC.text), ((TypeContext)_localctx).t1.ast); 
+					((TypeContext)_localctx).ast =  new ArrayType(((TypeContext)_localctx).t1.ast.getLine(), ((TypeContext)_localctx).t1.ast.getColumn(), LexerHelper.lexemeToInt((((TypeContext)_localctx).IC!=null?((TypeContext)_localctx).IC.getText():null)), ((TypeContext)_localctx).t1.ast);
 					}
 					} 
 				}
