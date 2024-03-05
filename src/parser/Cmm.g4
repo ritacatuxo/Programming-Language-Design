@@ -42,7 +42,12 @@ mainFunction returns [FuncDefinition ast]:
 /************* EXPRESSIONS ****************/
 
 expression returns [Expression ast]:
-          '(' pt=primitive_type ')' e1=expression {$ast = new Cast($e1.ast.getLine(), $e1.ast.getColumn(), $pt.ast, $e1.ast);} // Cast
+
+          e1=expression '[' e2=expression ']' // Indexing
+                                  {$ast = new Indexing($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast);} // Indexing
+          | e1=expression '.' ID
+                                  {$ast = new FieldAccess($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $ID.text);} // FieldAccess (ID is the field)
+          | '(' pt=primitive_type ')' e1=expression {$ast = new Cast($e1.ast.getLine(), $e1.ast.getColumn(), $pt.ast, $e1.ast);} // Cast
           | '-' e1=expression      {$ast = new UnaryMinus($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);} // UnaryMinus
           | '!' e1=expression      {$ast = new Negation($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}   // Arithmetic
           | e1=expression OP=('*'|'/'|'%') e2=expression
@@ -53,10 +58,6 @@ expression returns [Expression ast]:
                         {$ast = new Comparison($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} // Comparison
           | e1=expression OP=('&&'|'||') e2=expression
                         {$ast = new Logical($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} //logical
-          | e1=expression '.' ID
-                        {$ast = new FieldAccess($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $ID.text);} // FieldAccess (ID is the field)
-          | e1=expression '[' e2=expression ']' // Indexing
-                        {$ast = new Indexing($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast);} // Indexing
           | fi=function_invocation {$ast = $fi.ast;} //  function invocation as expression
           | ID               {$ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text); }   // Variable
           | IC=INT_CONSTANT  {$ast = new IntLiteral($IC.getLine(), $IC.getCharPositionInLine()+1, LexerHelper.lexemeToInt($IC.text)); } //  Intliteral
