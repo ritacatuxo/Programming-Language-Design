@@ -14,8 +14,8 @@ public class IfElse extends AbstractStatement {
     public IfElse(int line, int column, Expression condition, List<Statement> ifBody, List<Statement> elseBody) {
         super(line, column);
         this.condition = condition;
-        this.ifBody = new ArrayList<Statement>(ifBody);
-        this.elseBody = new ArrayList<Statement>(elseBody);
+        this.ifBody = new ArrayList<>(ifBody);
+        this.elseBody = new ArrayList<>(elseBody);
     }
 
 

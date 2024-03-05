@@ -14,9 +14,6 @@ public class Cast extends AbstractExpression{
 		this.expression = expression;
 	}
 
-	public Type getCastTo() {
-		return castTo;
-	}
 
 	public void setType(Type castTo) {
 		this.castTo = castTo;

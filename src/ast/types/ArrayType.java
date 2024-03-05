@@ -11,41 +11,19 @@ public class ArrayType extends AbstractType{
         this.type = type;
     }
 
-    /**
-
-    // TG FACTORY
-    // la primera vez que lo llamamos type es un int type, the secind time
-    public static ArrayType createArray(int line, int column, int size, Type previousType){
-
-        //check if precious type is array type id so we cannot use construcor
-        if (previousType instanceof ArrayType) {
-            // take obj and insert
-
-            //iteras sobr  la larga lista de AT y
-        }
-        //go to end and connect objs. Go
-
-    }
-
-
-*/
-
-
-
-
-
 
     /**
-     * As the creation of the array is recursive, this method creates the array in the good way
+     * As the creation of the array is recursive, this method acts as a factory creating the array in the good way
      */
-    public ArrayType buildArray(int size, Type type) {
+    public static ArrayType createArray(int size, Type previousType){
 
-        if (type instanceof ArrayType) {
-            ArrayType other = (ArrayType) type;
-            other.setType(buildArray(size, other.getType()));
+        //check if previous type is ArrayType, so we cannot use construcor
+        if (previousType instanceof ArrayType) {
+            ArrayType other = (ArrayType) previousType;
+            other.setType(createArray(size, other.getType()));
             return other;
         }
-        else return new ArrayType(type.getLine(), type.getColumn(), size, type);
+        else return new ArrayType(previousType.getLine(), previousType.getColumn(), size, previousType);
     }
 
 

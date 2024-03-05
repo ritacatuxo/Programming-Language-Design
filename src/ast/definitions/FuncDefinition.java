@@ -16,17 +16,12 @@ public class FuncDefinition extends AbstractDefinition{
 
     public FuncDefinition(int line, int column, FunctionType functionType, String name, List<VarDefinition> varDefinitions, List<Statement> statements) {
         super(line, column, functionType, name);
-        this.statements = new ArrayList<Statement>(statements);
-        this.varDefinitions = new ArrayList<VarDefinition>(varDefinitions);
+        this.statements = new ArrayList<>(statements);
+        this.varDefinitions = new ArrayList<>(varDefinitions);
     }
-
-
 
     public List<Statement> getStatements() {
         return statements;
-    }
-    public List<VarDefinition> getVarDefinitions() {
-        return varDefinitions;
     }
 
     @Override

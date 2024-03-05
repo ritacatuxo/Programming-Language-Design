@@ -9,13 +9,6 @@ public class VarDefinition extends AbstractDefinition{
         super(line, column, type, name);
     }
 
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
 
     @Override
     public String toString() {

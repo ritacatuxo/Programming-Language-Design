@@ -10,6 +10,6 @@ public class CharLiteral extends AbstractExpression{
 
     @Override
     public String toString() {
-        return "CharLiteral = " + value;
+        return "CharLiteral = '" + value + "'";
     }
 }

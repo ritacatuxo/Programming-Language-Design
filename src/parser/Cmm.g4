@@ -11,30 +11,31 @@ grammar Cmm;
 
 /************* PROGRAM ****************/
 
-program returns [Program ast] locals [List<Definition> defs]:
 
-        (vd=varDefinition {$defs.add($vd.ast);} | fd=functionDefinition  {$defs.add($fd.ast);} )*
-        mf=mainFunction {$defs.add($mf.ast);} EOF
-            {$ast = new Program(0, 0, $defs);} // program starts always in the first line and column -> nadie usa este line and column asique es igual
+program returns [Program ast = new Program(0, 0)]: // program starts in the first line and column
+        (d=definitions {$ast.setDefinitions($d.ast);})*
+        mf=mainFunction {$ast.addDefinition($mf.ast);} EOF
        ;
 
+// body of the program
+definitions returns [List<Definition> ast = new ArrayList<Definition>()]:
+            vd=varDefinition {$ast.addAll($vd.ast);}
+            |fd=functionDefinition {$ast.add($fd.ast);}
+           ;
 
-mainFunction returns [FuncDefinition ast]
-             locals [List<VarDefinition> varDefs, List<Statement> statements]:
-            'void' main='main' '(' p=parameters ')'
 
-            // body --
-            '{' (vd=varDefinition {$varDefs.add($vd.ast); } )* // creo l alista y lg voy añadiendo
-                (s=statement { $statements.addAll($s.ast); } )* '}'
+mainFunction returns [FuncDefinition ast]:
+            'void' main='main' '(' ')'
+
+            '{'
+                vd=varDefinitions st=statements
+            '}'
 
             // ast --
                 {$ast = new FuncDefinition($main.getLine(), $main.getCharPositionInLine()+1,
-                    new FunctionType($main.getLine(), $main.getCharPositionInLine()+1, $p.ast, new VoidType($main.getLine(), $main.getCharPositionInLine()+1)),
-                        $main.text, $varDefs, $statements);}
-
+                    new FunctionType($main.getLine(), $main.getCharPositionInLine()+1, new ArrayList<>(), new VoidType($main.getLine(), $main.getCharPositionInLine()+1)),
+                        $main.text, $vd.ast, $st.ast);}
             ;
-
-
 
 
 
@@ -45,15 +46,7 @@ expression returns [Expression ast]:
           | '-' e1=expression      {$ast = new UnaryMinus($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);} // UnaryMinus
           | '!' e1=expression      {$ast = new Negation($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}   // Arithmetic
           | e1=expression OP=('*'|'/'|'%') e2=expression
-                        {$ast = new Arithmetic($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} // Arithmetic
-                        // antiguo -> //{$ast = new Arithmetic.arithmeticFactory($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast)}
-
-          // % has its own type -> necesitas otra clase para remainder (modulus)
-          // no puedes seàrarñp bc tiene la misma precedemce que los otros * /
-          // es lo mismo  que en aray tpe -> el conrsuctor no va
-          // solucion: crete an algoih (factory method)
-          // usa factory y no el contrucor
-
+                        {$ast = Arithmetic.arithmeticFactory($OP.text, $e1.ast, $e2.ast);} // % has its own type but the same precedence as the other arithmetics ops * /
           | e1=expression OP=('+'|'-') e2=expression
                         {$ast = new Arithmetic($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} // Arithmetic
           | e1=expression OP=('>'|'<'|'>='|'<='|'!='|'==') e2=expression
@@ -62,9 +55,9 @@ expression returns [Expression ast]:
                         {$ast = new Logical($e1.ast.getLine(), $e1.ast.getColumn(), $OP.text, $e1.ast, $e2.ast);} //logical
           | e1=expression '.' ID
                         {$ast = new FieldAccess($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $ID.text);} // FieldAccess (ID is the field)
-          | expression '[' expression ']' // Indexing
+          | e1=expression '[' e2=expression ']' // Indexing
                         {$ast = new Indexing($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast);} // Indexing
-          | function_invocation
+          | fi=function_invocation {$ast = $fi.ast;} //  function invocation as expression
           | ID               {$ast = new Variable($ID.getLine(), $ID.getCharPositionInLine()+1, $ID.text); }   // Variable
           | IC=INT_CONSTANT  {$ast = new IntLiteral($IC.getLine(), $IC.getCharPositionInLine()+1, LexerHelper.lexemeToInt($IC.text)); } //  Intliteral
           | CC=CHAR_CONSTANT {$ast = new CharLiteral($CC.getLine(), $CC.getCharPositionInLine()+1, LexerHelper.lexemeToChar($CC.text)); } // CharLiteral
@@ -86,16 +79,16 @@ funcInvParameters returns [List<Expression> ast = new ArrayList<Expression>()]:
 /************* STATEMENTS ****************/
 
 statement returns [List<Statement> ast = new ArrayList<Statement>()]:
-           'while' '(' e1=expression ')' b1=block // While
+         'while' '(' e1=expression ')' b1=block // While
                         {$ast.add(new While($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $b1.ast));}
          | 'if' '(' e1=expression ')' b1=block eb=elseBody
                         {$ast.add(new IfElse($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $b1.ast, $eb.ast));}
          | 'read' e1=expression {$ast.add(new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast));}
-            (',' e2=expression {$ast.add(new Read($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast));} )*';' // Read
-         | 'write' e1=expression {$ast.add(new Read($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast));}
-            (',' e2=expression {$ast.add(new Read($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast));})*';'// Write
+            (',' e2=expression {$ast.add(new Read($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast));})*';' // Read
+         | 'write' e1=expression {$ast.add(new Write($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast));}
+            (',' e2=expression {$ast.add(new Write($e2.ast.getLine(), $e2.ast.getColumn(), $e2.ast));})*';'// Write
          | e1=expression '=' e2=expression {$ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $e2.ast));} ';' // Assignment
-         | function_invocation ';'
+         | fi=function_invocation {$ast.add($fi.ast);} ';' // function invocation as statement
          | 'return' e1=expression {$ast.add(new Return($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast));}';' // Return
          ;
 
@@ -117,26 +110,24 @@ block returns [List<Statement> ast = new ArrayList<Statement>()]:
 /************* TYPES ****************/
 
 type returns [Type ast]:
-    primitive_type
+    pm=primitive_type {$ast = $pm.ast;}
     | t1=type '['IC=INT_CONSTANT']'
-            //{ $ast = ArrayType.buildArray(Integer.parseInt(IC.text), $t1.ast); }
-              {$ast = new ArrayType($t1.ast.getLine(), $t1.ast.getColumn(), LexerHelper.lexemeToInt($IC.text), $t1.ast);}// recursive array
+              { $ast = ArrayType.createArray(Integer.parseInt($IC.text), $t1.ast); }
 
-    | struct
+    | s=struct {$ast = $s.ast;}
     ;
 
 
-
-
 primitive_type returns [Type ast]:
-              i='int' {$ast = new IntType($i.getLine(), $i.getCharPositionInLine()+1);} // do I need to pass line and column?
+                i='int' {$ast = new IntType($i.getLine(), $i.getCharPositionInLine()+1);}
               | d='double' {$ast = new DoubleType($d.getLine(), $d.getCharPositionInLine()+1);}
               | c='char' {$ast = new CharType($c.getLine(), $c.getCharPositionInLine()+1);}
               ;
 
 
 struct returns [RecordType ast]:
-      st='struct' '{' fd=fieldDefinition+  '}' {$ast = new RecordType( $st.getLine(), $st.getCharPositionInLine()+1, $fd.ast);} // NOT FINISHED
+      st='struct' {$ast = new RecordType($st.getLine(), $st.getCharPositionInLine()+1);}
+      '{' (fd=fieldDefinition {((RecordType) $ast).addRecordFields($fd.ast);})+ '}'
       ;
 
 fieldDefinition returns[List<RecordField> ast = new ArrayList<RecordField>()]:
@@ -147,24 +138,41 @@ fieldDefinition returns[List<RecordField> ast = new ArrayList<RecordField>()]:
 
 /************* DEFINITION ****************/
 
-varDefinition returns [VarDefinition ast]:
-             t1=type ID {$ast = new VarDefinition($t1.ast.getLine(), $t1.ast.getColumn(), $t1.ast, $ID.text);}
-             (',' ID {$ast = new VarDefinition($t1.ast.getLine(), $t1.ast.getColumn(), $t1.ast, $ID.text);} )* ';'
+varDefinition returns [List<VarDefinition> ast = new ArrayList<VarDefinition>()]:
+             t1=type ID {$ast.add(new VarDefinition($t1.ast.getLine(), $t1.ast.getColumn(), $t1.ast, $ID.text));}
+             (',' ID {$ast.add(new VarDefinition($t1.ast.getLine(), $t1.ast.getColumn(), $t1.ast, $ID.text));} )* ';'
              ;
 
 
-functionDefinition returns [FuncDefinition ast] locals [List<Statement> statements, List<VarDefinition> varDefs]:
-                  ('void'|pt=primitive_type) ID '(' p=parameters ')'
-                  '{' (vd=varDefinition {$varDefs.add($vd.ast); } )*
-                      (s=statement { $statements.addAll($s.ast); } )* '}'
+functionDefinition returns [FuncDefinition ast]:
+                  rt=returnType ID '(' p=parameters ')'
+                  '{' vd=varDefinitions st=statements '}'
                         {$ast = new FuncDefinition($ID.getLine(), $ID.getCharPositionInLine()+1,
-                            new FunctionType($ID.getLine(), $ID.getCharPositionInLine()+1, $p.ast, $pt.ast), $ID.text, $varDefs, $statements);}
+                            new FunctionType($ID.getLine(), $ID.getCharPositionInLine()+1, $p.ast, $rt.ast), $ID.text, $vd.ast, $st.ast);}
                   ;
-parameters returns [List<VarDefinition> ast = new ArrayList<VarDefinition>()]:
-          pt1=primitive_type ID {$ast.add( new VarDefinition($pt1.ast.getLine(), $pt1.ast.getColumn(), $pt1.ast, $ID.text));}
-          (',' pt2=primitive_type ID {$ast.add( new VarDefinition($pt2.ast.getLine(), $pt2.ast.getColumn(), $pt2.ast, $ID.text));} )*
+
+returnType returns [Type ast]:
+          pt=primitive_type {$ast = $pt.ast;}
+          | v='void' {$ast = new VoidType($v.getLine(), $v.getCharPositionInLine()+1);}
+          ;
+
+
+
+// parameters of the function
+parameters returns [List<VarDefinition> ast = new ArrayList<>()]:
+          pt1=primitive_type id=ID {$ast.add( new VarDefinition($pt1.ast.getLine(), $pt1.ast.getColumn(), $pt1.ast, $id.text));}
+          (',' pt2=primitive_type id2=ID {$ast.add( new VarDefinition($pt2.ast.getLine(), $pt2.ast.getColumn(), $pt2.ast, $id2.text));} )*
           | // epsilon in case there are no parameters
           ;
+
+
+// -- body of the function
+varDefinitions returns[List<VarDefinition> ast = new ArrayList<VarDefinition>()]:
+              (vd=varDefinition {$ast.addAll($vd.ast);} )*
+              ;
+statements returns[List<Statement> ast = new ArrayList<Statement>()]:
+              (st=statement {$ast.addAll($st.ast);} )*
+              ;
 
 
 /************* LEXER ****************/

@@ -12,13 +12,6 @@ public class FieldAccess extends AbstractExpression{
 		this.fieldName = fieldName;
 	}
 
-	public String getFieldName() {
-		return fieldName;
-	}
-
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
 
 	public Expression getExpression() {
 		return expression;

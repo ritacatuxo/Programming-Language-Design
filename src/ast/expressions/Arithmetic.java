@@ -13,38 +13,17 @@ public class Arithmetic extends AbstractExpression {
 		this.left = left;
 		this.right = right;
 	}
-/*
-	public static Expression arithmeticFactory(int line, int column, String operator, Expression left, Expression right)
+
+	public static Expression arithmeticFactory(String operator, Expression left, Expression right)
 	{
-		if(operator.equals("%"))
-			return new Modulus(line, column, left,right);
-		else return new Arithmetic(line, column, operator, left,right);
-	}
-*/
-
-	public String getOperator() {
-		return operator;
+		if(operator.equals("%")) {
+			return new Modulus(left.getLine(), left.getColumn(), left, right);
+		}
+		else {
+			return new Arithmetic(left.getLine(), left.getColumn(), operator, left,right);
+		}
 	}
 
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
-
-	public Expression getLeft() {
-		return left;
-	}
-
-	public void setLeft(Expression left) {
-		this.left = left;
-	}
-
-	public Expression getRight() {
-		return right;
-	}
-
-	public void setRight(Expression right) {
-		this.right = right;
-	}
 
 	@Override
 	public String toString() {
