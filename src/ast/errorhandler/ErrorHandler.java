@@ -13,7 +13,7 @@ public class ErrorHandler {
 
     private ErrorHandler() {
 
-        this.errors = new ArrayList<>(errors);
+        this.errors = new ArrayList<>();
     }
 
     public static ErrorHandler getInstance() {
@@ -29,7 +29,7 @@ public class ErrorHandler {
             out.println("No errors");
         else {
             for(ErrorType error: this.errors) {
-                out.println(error.getMessage());
+                out.println(error.toString());
             }
         }
     }
@@ -38,8 +38,4 @@ public class ErrorHandler {
         this.errors.add(error);
     }
 
-    // esta bien?
-    public List<ErrorType> getErrors() {
-        return errors;
-    }
 }

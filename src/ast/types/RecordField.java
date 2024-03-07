@@ -11,7 +11,6 @@ public class RecordField implements ASTNode {
     private int column;
     private Type type;
     private String fieldName;
-    private RecordField definition; // esto esta bien? record field deberia tener una definition ya que es casi lo mismo que variable
 
     public RecordField(int line, int column, Type type, String fieldName) {
 
@@ -43,10 +42,6 @@ public class RecordField implements ASTNode {
         return fieldName;
     }
 
-
-    public String getDefinition() {
-        return this.definition;
-    }
 
     @Override
     public String toString() {

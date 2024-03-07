@@ -9,12 +9,9 @@ public class ErrorType extends AbstractType{
         this.message = message;
     }
 
-    public String getMessage() {
-        return message;
-    }
 
     @Override
     public String toString() {
-        return "ErrorType{" + message + '}';
+        return "ErrorType: " + message;
     }
 }
