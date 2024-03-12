@@ -1,6 +1,8 @@
 package ast.expressions;
 
 
+import ast.visitor.Visitor;
+
 public class Indexing extends AbstractExpression {
 
     private Expression left; //v[a+b] -> v
@@ -17,5 +19,10 @@ public class Indexing extends AbstractExpression {
         return "Indexing = " +
                 left + "[" +
                 right + "]";
+    }
+
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

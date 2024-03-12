@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import ast.visitor.Visitor;
+
 public class FieldAccess extends AbstractExpression{
 
 	private String fieldName; // obj.fieldName
@@ -26,5 +28,10 @@ public class FieldAccess extends AbstractExpression{
 		return "FieldAccess = " +
 				fieldName + '.' +
 				expression;
+	}
+
+	@Override
+	public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+		return visitor.visit(this, param);
 	}
 }

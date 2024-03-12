@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import ast.visitor.Visitor;
+
 public class IntLiteral extends AbstractExpression{
 
 	private int value;
@@ -13,5 +15,10 @@ public class IntLiteral extends AbstractExpression{
 	@Override
 	public String toString() {
 		return "IntLiteral = " + value;
+	}
+
+	@Override
+	public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+		return visitor.visit(this, param);
 	}
 }

@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.ASTNode;
+import ast.visitor.Visitor;
 
 // Struct {
 //     int field; <-- NO SON VARDEFINITINS bc necesitan .field
@@ -36,6 +37,11 @@ public class RecordField implements ASTNode {
     @Override
     public int getColumn() {
         return this.column;
+    }
+
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return null;
     }
 
     public String getFieldName() {

@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import ast.visitor.Visitor;
+
 public class Logical extends AbstractExpression {
 
 	private String operator; // (and-&&) / (or-||)
@@ -16,5 +18,18 @@ public class Logical extends AbstractExpression {
 	@Override
 	public String toString() {
 		return "Logical=" + left + operator + right;
+	}
+
+	public Expression getLeft() {
+		return left;
+	}
+
+	public Expression getRight() {
+		return right;
+	}
+
+	@Override
+	public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+		return visitor.visit(this, param);
 	}
 }

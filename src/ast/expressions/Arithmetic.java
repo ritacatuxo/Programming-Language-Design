@@ -1,6 +1,8 @@
 package ast.expressions;
 
 
+import ast.visitor.Visitor;
+
 public class Arithmetic extends AbstractExpression {
 
 	private String operator; // + - * / %
@@ -24,9 +26,21 @@ public class Arithmetic extends AbstractExpression {
 		}
 	}
 
+	public Expression getLeft() {
+		return left;
+	}
+
+	public Expression getRight() {
+		return right;
+	}
 
 	@Override
 	public String toString() {
 		return "Arithmetic = " + left + operator + right;
+	}
+
+	@Override
+	public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+		return visitor.visit(this, param);
 	}
 }

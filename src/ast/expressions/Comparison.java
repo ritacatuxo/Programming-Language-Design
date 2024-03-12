@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import ast.visitor.Visitor;
+
 public class Comparison extends AbstractExpression{
 
 	private String operator; // '>'|'<'|'>='|'<='|'!='|'=='
@@ -16,6 +18,19 @@ public class Comparison extends AbstractExpression{
 	@Override
 	public String toString() {
 		return "Comparison = " + left + operator + right;
+	}
+
+	public Expression getLeft() {
+		return left;
+	}
+
+	public Expression getRight() {
+		return right;
+	}
+
+	@Override
+	public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+		return visitor.visit(this, param);
 	}
 }
 

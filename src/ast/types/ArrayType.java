@@ -1,5 +1,7 @@
 package ast.types;
 
+import ast.visitor.Visitor;
+
 // int[13] --> size = 13 and type = IntType
 public class ArrayType extends AbstractType{
 
@@ -41,5 +43,10 @@ public class ArrayType extends AbstractType{
                 "size=" + size +
                 ", type=" + type +
                 '}';
+    }
+
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

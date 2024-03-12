@@ -1,5 +1,7 @@
 package ast.types;
 
+import ast.visitor.Visitor;
+
 public class IntType extends AbstractType{
 
 
@@ -12,4 +14,8 @@ public class IntType extends AbstractType{
         return "int";
     }
 
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
 }

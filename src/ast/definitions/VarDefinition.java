@@ -4,6 +4,7 @@ import ast.errorhandler.ErrorHandler;
 import ast.types.ErrorType;
 import ast.types.RecordField;
 import ast.types.Type;
+import ast.visitor.Visitor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,5 +35,10 @@ public class VarDefinition extends AbstractDefinition{
         return "VarDefinition{" +
                 "offset=" + offset +
                 '}';
+    }
+
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

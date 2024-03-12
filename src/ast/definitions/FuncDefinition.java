@@ -3,6 +3,7 @@ package ast.definitions;
 import ast.statements.Statement;
 import ast.types.FunctionType;
 import ast.types.Type;
+import ast.visitor.Visitor;
 
 import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
@@ -30,5 +31,10 @@ public class FuncDefinition extends AbstractDefinition{
                 "statements=" + statements +
                 ", varDefinitions=" + varDefinitions +
                 '}';
+    }
+
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

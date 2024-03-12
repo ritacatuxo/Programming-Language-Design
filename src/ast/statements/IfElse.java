@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ast.expressions.Expression;
+import ast.visitor.Visitor;
 
 public class IfElse extends AbstractStatement {
 
@@ -28,4 +29,8 @@ public class IfElse extends AbstractStatement {
                 '}';
     }
 
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
+    }
 }

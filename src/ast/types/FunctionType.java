@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.definitions.VarDefinition;
+import ast.visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,5 +23,10 @@ public class FunctionType extends AbstractType{
                 "arguments=" + parameters +
                 ", return type=" + returnType +
                 '}';
+    }
+
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

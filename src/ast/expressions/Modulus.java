@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import ast.visitor.Visitor;
+
 public class Modulus extends AbstractExpression{
 
     private Expression left;
@@ -15,5 +17,10 @@ public class Modulus extends AbstractExpression{
     @Override
     public String toString() {
         return "Modulus{" + left + "%" + right + '}';
+    }
+
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }

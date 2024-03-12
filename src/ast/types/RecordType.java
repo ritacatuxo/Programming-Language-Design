@@ -2,6 +2,7 @@ package ast.types;
 
 import ast.definitions.VarDefinition;
 import ast.errorhandler.ErrorHandler;
+import ast.visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,5 +57,10 @@ public class RecordType extends AbstractType {
     public String toString() {
         return "RecordType{" +
                 "recordFields=" + recordFields + '}';
+    }
+
+    @Override
+    public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
+        return visitor.visit(this, param);
     }
 }
