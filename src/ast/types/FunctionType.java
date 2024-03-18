@@ -1,7 +1,7 @@
 package ast.types;
 
 import ast.definitions.VarDefinition;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,14 @@ public class FunctionType extends AbstractType{
         super(line, column);
         this.parameters = new ArrayList<>(parameters);
         this.returnType =returnType;
+    }
+
+    public List<VarDefinition> getParameters() {
+        return parameters;
+    }
+
+    public Type getReturnType() {
+        return returnType;
     }
 
     @Override

@@ -1,5 +1,7 @@
 import ast.Program;
 import ast.errorhandler.ErrorHandler;
+import ast.semantic.TypeCheckingVisitor;
+import ast.semantic.Visitor;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
 import parser.*;
@@ -34,7 +36,14 @@ public class Main {
 
 		// CODE FOR ERRORS ------------------------
 
+
 		Program ast = parser.program().ast;
+
+		System.out.println();
+		System.out.println("Running Type Checking Visitor...");
+		Visitor<Void, Void> typeChecking = new TypeCheckingVisitor();
+		ast.accept(typeChecking, null);
+
 		if (ErrorHandler.getInstance().anyErrors())
 			ErrorHandler.getInstance().showErrors(System.err);
 		else {

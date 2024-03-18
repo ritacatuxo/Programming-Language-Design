@@ -2,9 +2,8 @@ package ast.definitions;
 
 import ast.errorhandler.ErrorHandler;
 import ast.types.ErrorType;
-import ast.types.RecordField;
 import ast.types.Type;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 import java.util.HashMap;
 import java.util.Map;

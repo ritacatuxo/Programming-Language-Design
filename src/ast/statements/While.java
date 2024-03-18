@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ast.expressions.Expression;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 public class While extends AbstractStatement {
 
@@ -24,6 +24,10 @@ public class While extends AbstractStatement {
 
 	public void setExpression(Expression expression) {
 		this.expression = expression;
+	}
+
+	public List<Statement> getBody() {
+		return body;
 	}
 
 	@Override

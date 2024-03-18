@@ -1,6 +1,6 @@
 package ast.expressions;
 
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 public class Modulus extends AbstractExpression{
 
@@ -12,6 +12,14 @@ public class Modulus extends AbstractExpression{
         super(line, column);
         this.left = left;
         this.right = right;
+    }
+
+    public Expression getLeft() {
+        return left;
+    }
+
+    public Expression getRight() {
+        return right;
     }
 
     @Override

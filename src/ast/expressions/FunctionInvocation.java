@@ -2,7 +2,7 @@ package ast.expressions;
 
 
 import ast.statements.Statement;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,14 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
         super(line, column);
         this.parameters = new ArrayList<>(parameters); // clone
         this.var = var;
+    }
+
+    public List<Expression> getParameters() {
+        return parameters;
+    }
+
+    public Variable getVar() {
+        return var;
     }
 
     @Override

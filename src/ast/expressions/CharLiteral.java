@@ -1,6 +1,6 @@
 package ast.expressions;
 
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 public class CharLiteral extends AbstractExpression{
 

@@ -1,7 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 public class Write extends AbstractStatement {
 

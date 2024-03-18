@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ast.expressions.Expression;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 public class IfElse extends AbstractStatement {
 
@@ -19,6 +19,17 @@ public class IfElse extends AbstractStatement {
         this.elseBody = new ArrayList<>(elseBody);
     }
 
+    public Expression getCondition() {
+        return condition;
+    }
+
+    public List<Statement> getIfBody() {
+        return ifBody;
+    }
+
+    public List<Statement> getElseBody() {
+        return elseBody;
+    }
 
     @Override
     public String toString() {

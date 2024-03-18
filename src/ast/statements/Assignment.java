@@ -1,7 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 public class Assignment extends AbstractStatement {
 
@@ -9,7 +9,6 @@ public class Assignment extends AbstractStatement {
     private Expression left;
     private Expression right;
 
-    private boolean lvalue;
 
     public Assignment(int line, int column, Expression left, Expression right) {
         super(line, column);
@@ -17,13 +16,6 @@ public class Assignment extends AbstractStatement {
         this.right = right;
     }
 
-    public boolean isLvalue() {
-        return lvalue;
-    }
-
-    public void setLvalue(boolean lvalue) {
-        this.lvalue = lvalue;
-    }
 
     public Expression getLeft() {
         return left;

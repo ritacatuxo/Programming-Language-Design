@@ -1,6 +1,6 @@
 package ast.types;
 
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 public class DoubleType extends AbstractType{
 

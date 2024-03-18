@@ -1,7 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 public class Return extends AbstractStatement {
 
@@ -10,6 +10,10 @@ public class Return extends AbstractStatement {
     public Return(int line, int column, Expression ret) {
         super(line, column);
         this.ret = ret;
+    }
+
+    public Expression getRet() {
+        return ret;
     }
 
     @Override

@@ -2,7 +2,7 @@ package ast.expressions;
 
 
 import ast.types.Type;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 public class Cast extends AbstractExpression{
 
@@ -15,6 +15,10 @@ public class Cast extends AbstractExpression{
 		this.expression = expression;
 	}
 
+
+	public Type getCastTo() {
+		return castTo;
+	}
 
 	public void setType(Type castTo) {
 		this.castTo = castTo;

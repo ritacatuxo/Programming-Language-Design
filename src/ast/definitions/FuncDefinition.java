@@ -2,10 +2,8 @@ package ast.definitions;
 
 import ast.statements.Statement;
 import ast.types.FunctionType;
-import ast.types.Type;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +21,10 @@ public class FuncDefinition extends AbstractDefinition{
 
     public List<Statement> getStatements() {
         return statements;
+    }
+
+    public List<VarDefinition> getVarDefinitions() {
+        return varDefinitions;
     }
 
     @Override

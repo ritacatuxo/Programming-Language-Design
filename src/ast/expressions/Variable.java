@@ -1,12 +1,6 @@
 package ast.expressions;
 
-import ast.definitions.VarDefinition;
-import ast.errorhandler.ErrorHandler;
-import ast.types.ErrorType;
-import ast.visitor.Visitor;
-
-import java.util.HashMap;
-import java.util.Map;
+import ast.semantic.Visitor;
 
 public class Variable extends AbstractExpression{
 

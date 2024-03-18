@@ -1,13 +1,10 @@
 package ast.types;
 
-import ast.definitions.VarDefinition;
 import ast.errorhandler.ErrorHandler;
-import ast.visitor.Visitor;
+import ast.semantic.Visitor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 // Struct
 public class RecordType extends AbstractType {
@@ -51,6 +48,10 @@ public class RecordType extends AbstractType {
 
         checkDuplicatedFields(recordFields);
         this.recordFields.addAll(recordFields);
+    }
+
+    public List<RecordField> getRecordFields() {
+        return recordFields;
     }
 
     @Override
