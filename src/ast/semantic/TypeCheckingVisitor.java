@@ -73,7 +73,8 @@ public class TypeCheckingVisitor implements Visitor<Void, Void> {
     public Void visit(Comparison comparison, Void param) {
         comparison.getLeft().accept(this, param); // traverse first child
         comparison.getRight().accept(this, param); // traverse second child
-        comparison.accept(this, param);
+        //comparison.accept(this, param);
+        comparison.setLvalue(false);
         return null;
     }
 
@@ -185,7 +186,11 @@ public class TypeCheckingVisitor implements Visitor<Void, Void> {
     public Void visit(Read read, Void param) {
         read.getExpression().accept(this, param);
 
+    if(!read.getExpression().getLvalue()){
+        new ErrorType(read.getLine(), read.getColumn(), "[SEMANTIC ERROR] [Line: " + read.getLine() +
+                " Columnn: " + read.getColumn() + "] - the expression of Read is required");
 
+    }
 
         return null;
     }

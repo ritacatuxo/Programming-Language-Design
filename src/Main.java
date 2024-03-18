@@ -41,8 +41,11 @@ public class Main {
 
 		System.out.println();
 		System.out.println("Running Type Checking Visitor...");
-		Visitor<Void, Void> typeChecking = new TypeCheckingVisitor();
-		ast.accept(typeChecking, null);
+
+		new TypeCheckingVisitor().visit(ast, null);
+
+		//Visitor<Void, Void> typeChecking = new TypeCheckingVisitor();
+		//ast.accept(typeChecking, null);
 
 		if (ErrorHandler.getInstance().anyErrors())
 			ErrorHandler.getInstance().showErrors(System.err);

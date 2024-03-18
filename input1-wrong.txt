@@ -7,7 +7,7 @@ int f() {
 }
 void main() {
 	int i;
-	(i+2) = 3;			// error
+	//(i+2) = 3;			// error
 	3 = 2;				// error
 	i > 3 = i;			// error
 	-i = 1;				// error
