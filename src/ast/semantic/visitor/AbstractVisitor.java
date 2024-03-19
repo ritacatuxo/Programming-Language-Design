@@ -23,14 +23,15 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
     public TR visit(FuncDefinition funcDefinition, TP param) {
-        funcDefinition.getType().accept(this, param); // tengo que hacer accept al type?
+        funcDefinition.getType().accept(this, param);
+        for(VarDefinition vd : funcDefinition.getVarDefinitions()){
+            vd.accept(this, param);
+        }
         for(Statement st : funcDefinition.getStatements())
         {
             st.accept(this, param);
         }
-        for(VarDefinition vd : funcDefinition.getVarDefinitions()){
-            vd.accept(this, param);
-        }
+
         return null;
     }
 

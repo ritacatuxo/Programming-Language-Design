@@ -2,6 +2,7 @@ package ast.semantic.visitor;
 
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
+import ast.expressions.FunctionInvocation;
 import ast.expressions.Variable;
 import ast.semantic.symboltable.SymbolTable;
 import ast.statements.Read;
@@ -18,29 +19,28 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void>{
     @Override
     public Void visit(VarDefinition varDefinition, Void param) {
 
-        if(symbolTable.findInCurrentScope(varDefinition.getName()) == null) {
+        if(!symbolTable.insert(varDefinition)) {
             new ErrorType(varDefinition.getLine(), varDefinition.getColumn(), "[IDENTIFICATION ERROR] [Line: " + varDefinition.getLine() +
-                    " Columnn: " + varDefinition.getColumn() + "] - The variable name "+ varDefinition.getName()+" has already been defined in the scope");
-
+                    " Columnn: " + varDefinition.getColumn() + "] - The variable \""+ varDefinition.getName()+"\" has already been defined in the scope");
         }
+        else
+            varDefinition.getType().accept(this, param);
 
-        symbolTable.insert(varDefinition);
         return null;
     }
 
     @Override
     public Void visit(FuncDefinition funcDefinition, Void param) {
 
-        symbolTable.insert(funcDefinition); // insert the function to the global scope
-        symbolTable.set(); // create the new scope
-        for(VarDefinition parameter : funcDefinition.getVarDefinitions()) {
-            symbolTable.insert(parameter);
-        } // insert parameters
-        for(Statement bodyStatement : funcDefinition.getStatements()) { // insert parameters
-
-        } // traverse its child ?
-
-        symbolTable.reset(); // delete the scope
+        if(!symbolTable.insert(funcDefinition)) { // insert the function to the global scope
+            new ErrorType(funcDefinition.getLine(), funcDefinition.getColumn(), "[IDENTIFICATION ERROR] [Line: " + funcDefinition.getLine() +
+                    " Columnn: " + funcDefinition.getColumn() + "] - The function \"" + funcDefinition.getName() + "\" has already been defined in the scope");
+        }
+        else {
+            symbolTable.set(); // create the new scope
+            super.visit(funcDefinition, param);
+            symbolTable.reset(); // delete the scope
+        }
 
         return null;
     }
@@ -48,19 +48,28 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void>{
     @Override
     public Void visit(Variable variable, Void param) {
 
-        if(symbolTable.findInCurrentScope(variable.getName()) == null) {
+        if(symbolTable.find(variable.getName()) == null) {
             new ErrorType(variable.getLine(), variable.getColumn(), "[IDENTIFICATION ERROR] [Line: " + variable.getLine() +
-                    " Columnn: " + variable.getColumn() + "] - The variable name "+ variable.getName()+" has not been defined");
+                    " Columnn: " + variable.getColumn() + "] - The variable name \""+ variable.getName()+"\" is not defined");
 
         }
-
-        variable.setDefinition(symbolTable.find(variable.getName()));
+        else {
+            variable.setDefinition(symbolTable.find(variable.getName()));
+        }
         return null;
     }
 
     @Override
-    public Void visit(Read read, Void param) {
+    public Void visit(FunctionInvocation fi, Void param) {
 
+        if(symbolTable.find(fi.getVar().getName()) == null) {
+            new ErrorType(fi.getLine(), fi.getColumn(), "[IDENTIFICATION ERROR] [Line: " + fi.getLine() +
+                    " Columnn: " + fi.getColumn() + "] - The variable \""+ fi.getVar().getName()+"\" is not defined");
+
+        }
+        else {
+            fi.getVar().setDefinition(symbolTable.find(fi.getVar().getName()));
+        }
         return null;
     }
 
