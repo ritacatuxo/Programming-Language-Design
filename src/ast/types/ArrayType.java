@@ -1,6 +1,6 @@
 package ast.types;
 
-import ast.semantic.Visitor;
+import ast.semantic.visitor.Visitor;
 
 // int[13] --> size = 13 and type = IntType
 public class ArrayType extends AbstractType{

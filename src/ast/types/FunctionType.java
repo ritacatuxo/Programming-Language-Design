@@ -1,7 +1,7 @@
 package ast.types;
 
 import ast.definitions.VarDefinition;
-import ast.semantic.Visitor;
+import ast.semantic.visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;

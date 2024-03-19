@@ -12,6 +12,6 @@ void main() {
   a = 0;
   i = 0;
   j = -i*a-2;  
-  v[ (int)(v[j]) ] = a;
+  //v[ (int)(v[j]) ] = a;
   write 'f', '(', 'i', ')', '=' ,f(i);
 }

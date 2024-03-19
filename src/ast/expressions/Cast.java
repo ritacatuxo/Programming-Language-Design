@@ -2,7 +2,7 @@ package ast.expressions;
 
 
 import ast.types.Type;
-import ast.semantic.Visitor;
+import ast.semantic.visitor.Visitor;
 
 public class Cast extends AbstractExpression{
 

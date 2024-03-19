@@ -1,4 +1,4 @@
-package ast.semantic;
+package ast.semantic.visitor;
 
 import ast.Program;
 import ast.expressions.*;

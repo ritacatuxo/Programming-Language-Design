@@ -3,7 +3,7 @@ package ast.definitions;
 import ast.errorhandler.ErrorHandler;
 import ast.types.ErrorType;
 import ast.types.Type;
-import ast.semantic.Visitor;
+import ast.semantic.visitor.Visitor;
 
 import java.util.HashMap;
 import java.util.Map;

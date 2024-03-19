@@ -1,7 +1,6 @@
 import ast.Program;
 import ast.errorhandler.ErrorHandler;
-import ast.semantic.TypeCheckingVisitor;
-import ast.semantic.Visitor;
+import ast.semantic.visitor.TypeCheckingVisitor;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
 import parser.*;

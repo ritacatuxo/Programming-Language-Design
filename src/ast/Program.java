@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ast.definitions.Definition;
-import ast.semantic.Visitor;
+import ast.semantic.visitor.Visitor;
 
 public class Program extends AbstractASTNode {
 	

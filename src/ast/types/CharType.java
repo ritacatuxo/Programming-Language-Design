@@ -1,6 +1,6 @@
 package ast.types;
 
-import ast.semantic.Visitor;
+import ast.semantic.visitor.Visitor;
 
 public class CharType extends AbstractType{
 

@@ -1,6 +1,6 @@
 package ast.expressions;
 
-import ast.semantic.Visitor;
+import ast.semantic.visitor.Visitor;
 
 public class Logical extends AbstractExpression {
 
