@@ -31,7 +31,7 @@ public interface Visitor<TP, TR> {
     public TR visit(IntLiteral intLiteral, TP param);
     public TR visit(Logical logical, TP param);
     public TR visit(Modulus modulus, TP param);
-    public TR visit(Negation negation, TP param);
+    public TR visit(UnaryNot negation, TP param);
     public TR visit(UnaryMinus unaryMinus, TP param);
     public TR visit(Variable variable, TP param);
 

@@ -53,7 +53,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     public TR visit(Cast cast, TP param) {
         cast.getExpression().accept(this, param);
-        cast.getCastTo().accept(this, param);
+        cast.getCastType().accept(this, param);
         return null;
     }
 
@@ -117,7 +117,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
 
-    public TR visit(Negation negation, TP param) {
+    public TR visit(UnaryNot negation, TP param) {
         negation.getExpression().accept(this, param);
         return null;
     }

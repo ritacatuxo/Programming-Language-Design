@@ -1,11 +1,6 @@
 package ast.semantic.visitor;
 
-import ast.Program;
-import ast.definitions.Definition;
-import ast.definitions.FuncDefinition;
-import ast.definitions.VarDefinition;
 import ast.expressions.*;
-import ast.semantic.visitor.Visitor;
 import ast.statements.*;
 import ast.types.*;
 
@@ -87,7 +82,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     }
 
     @Override
-    public Void visit(Negation negation, Void param) {
+    public Void visit(UnaryNot negation, Void param) {
         negation.setLvalue(false);
         return null;
     }

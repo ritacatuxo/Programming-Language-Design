@@ -6,22 +6,22 @@ import ast.semantic.visitor.Visitor;
 
 public class Cast extends AbstractExpression{
 
-	private Type castTo; // (char)n -> char, the type we cast to
+	private Type castType; // (char)n -> char, the type we cast to
 	private Expression expression; // (char)n -> n
 
-	public Cast(int line, int column, Type castTo, Expression expression) {
+	public Cast(int line, int column, Type castType, Expression expression) {
 		super(line, column);
-		this.castTo = castTo;
+		this.castType = castType;
 		this.expression = expression;
 	}
 
 
-	public Type getCastTo() {
-		return castTo;
+	public Type getCastType() {
+		return castType;
 	}
 
 	public void setType(Type castTo) {
-		this.castTo = castTo;
+		this.castType = castTo;
 	}
 
 	public Expression getExpression() {
@@ -36,7 +36,7 @@ public class Cast extends AbstractExpression{
 
 	@Override
 	public String toString() {
-		return "Cast = (" + castTo + ") " + expression;
+		return "Cast = (" + castType + ") " + expression;
 	}
 
 	@Override
