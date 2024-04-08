@@ -9,4 +9,6 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
 		super(line, column);
 	}
 
+
+
 }

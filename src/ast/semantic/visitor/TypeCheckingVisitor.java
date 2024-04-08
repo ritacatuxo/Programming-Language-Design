@@ -7,7 +7,7 @@ import ast.types.*;
 public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 
     // set/annotate lvalue attribute for expression nodes to validate the assignments
-    // lvalue es lo que puedes poner a la izquierda en un assignment?
+    // lvalue es lo que puedes poner a la izquierda en un assignment
 
 
     // --- expressions
@@ -16,6 +16,9 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     public Void visit(Arithmetic arithmetic, Void param) {
 
         arithmetic.setLvalue(false);
+
+        arithmetic.setType(arithmetic.getLeft().getType()
+                .arithmetic(arithmetic.getRight().getType(), arithmetic));
         return null;
     }
 
