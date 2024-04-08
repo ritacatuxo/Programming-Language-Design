@@ -23,4 +23,20 @@ public class ErrorType extends AbstractType{
     public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }
+
+
+    @Override
+    public Type arithmetic(int line, int column, Type t){
+        return this;
+    }
+
+    @Override
+    public Type modulus(int line, int column, Type t){
+        return this;
+    }
+
+    @Override
+    public Type logical(int line, int column, Type t){
+        return this;
+    }
 }

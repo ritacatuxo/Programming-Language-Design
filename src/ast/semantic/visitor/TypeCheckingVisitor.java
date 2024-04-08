@@ -10,15 +10,17 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     // lvalue es lo que puedes poner a la izquierda en un assignment
 
 
+
     // --- expressions
 
     @Override
-    public Void visit(Arithmetic arithmetic, Void param) {
+    public Void visit(Arithmetic arith, Void param) {
 
-        arithmetic.setLvalue(false);
+        arith.setLvalue(false);
 
-        arithmetic.setType(arithmetic.getLeft().getType()
-                .arithmetic(arithmetic.getRight().getType(), arithmetic));
+        // type checking
+        arith.setType(arith.getLeft().getType()
+                .arithmetic(arith.getLine(), arith.getColumn(), arith.getRight().getType()));
         return null;
     }
 
@@ -35,8 +37,12 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     }
 
     @Override
-    public Void visit(Comparison comparison, Void param) {
-        comparison.setLvalue(false);
+    public Void visit(Comparison com, Void param) {
+        com.setLvalue(false);
+
+        // expression1.type = expression2.type.com(expression3.type)
+        com.setType(com.getLeft().getType()
+                .comparison(com.getLine(), com.getColumn(), com.getRight().getType()));
         return null;
     }
 
@@ -72,27 +78,43 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     }
 
     @Override
-    public Void visit(Logical logical, Void param) {
-        logical.setLvalue(false);
+    public Void visit(Logical log, Void param) {
+        log.setLvalue(false);
+
+        // expression1.type = expression2.type.log(expression3.type)
+        log.setType(log.getLeft().getType()
+                .logical(log.getLine(), log.getColumn(), log.getRight().getType()));
+
         return null;
     }
 
     // a % 3 -> it is arithmetic -> false
     @Override
-    public Void visit(Modulus modulus, Void param) {
-        modulus.setLvalue(false);
+    public Void visit(Modulus mod, Void param) {
+        mod.setLvalue(false);
+
+        // type checking
+        //expression1.type = expression2.type.mod(expression3.type)
+        mod.setType(mod.getLeft().getType()
+                .modulus(mod.getLine(), mod.getColumn(), mod.getRight().getType()));
         return null;
     }
 
     @Override
     public Void visit(UnaryNot negation, Void param) {
         negation.setLvalue(false);
+
+        // expression1.type = expression2.type.toUnaryNot()
+        negation.getType().toUnaryNot(negation.getLine(), negation.getColumn());
         return null;
     }
 
     @Override
     public Void visit(UnaryMinus unaryMinus, Void param) {
         unaryMinus.setLvalue(false);
+
+        // expression1.type = expression2.type.toUnaryNot()
+        unaryMinus.getType().toUnaryMinus(unaryMinus.getLine(), unaryMinus.getColumn());
         return null;
     }
 

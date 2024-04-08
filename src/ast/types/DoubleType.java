@@ -8,6 +8,7 @@ public class DoubleType extends AbstractType{
         super(line, column);
     }
 
+
     @Override
     public String toString() {
         return "double";
@@ -16,5 +17,15 @@ public class DoubleType extends AbstractType{
     @Override
     public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public Type arithmetic(int line, int column, Type t){
+        return new DoubleType(line, column);
+    }
+
+    @Override
+    public Type toUnaryMinus(int line, int column){
+        return new DoubleType(line, column);
     }
 }
