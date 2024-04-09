@@ -2,6 +2,7 @@ import ast.Program;
 import ast.errorhandler.ErrorHandler;
 import ast.semantic.visitor.IdentificationVisitor;
 import ast.semantic.visitor.TypeCheckingVisitor;
+import ast.semantic.visitor.Visitor;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
 import parser.*;
@@ -26,34 +27,34 @@ public class Main {
 		// create a parser that feeds off the tokens buffer
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		CmmParser parser = new CmmParser(tokens);
-		/*
 		Program ast = parser.program().ast;
 
-		IntrospectorModel model=new IntrospectorModel("Program", ast);
-		new IntrospectorView("Introspector", model);
-		*/
 
-
-
-
-		Program ast = parser.program().ast;
-
-		// LAB07
-		/*System.out.println("Running Type Checking Visitor...");
-		new TypeCheckingVisitor().visit(ast, null);*/
-
-		// LAB08
+		System.out.println();
 		System.out.println("Running Identification Visitor...");
-		new IdentificationVisitor().visit(ast, null);
+		Visitor identificationVisitor = new IdentificationVisitor();
+		ast.accept(identificationVisitor, null);
 
-		if (ErrorHandler.getInstance().anyErrors())
+		/*if (ErrorHandler.getInstance().anyErrors())
 			ErrorHandler.getInstance().showErrors(System.err);
 		else {
 			// * The AST is shown if no errors exist
-			IntrospectorModel model = new IntrospectorModel(
-					"Program", ast);
+			IntrospectorModel model = new IntrospectorModel("Program", ast);
 			new IntrospectorView("Introspector", model);
+		}*/
+
+		// LAB09 - TYPE CHECKING
+		System.out.println();
+		System.out.println("Running Type Checking Visitor...");
+		Visitor typeChecking = new TypeCheckingVisitor();
+		ast.accept(typeChecking, null);
+
+		if (ErrorHandler.getInstance().anyErrors()) {
+			ErrorHandler.getInstance().showErrors(System.err);
+			System.err.println("Cannot proceed with code generation until errors are solved. Stopping...");
+			return;
 		}
+
 
 	}
 }

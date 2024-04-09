@@ -64,4 +64,16 @@ public class RecordType extends AbstractType {
     public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }
+
+
+    public Type dot(int line, int column, String fieldName) {
+        for (RecordField field : this.recordFields) {
+            if (field.getFieldName().toLowerCase().equals(fieldName.toLowerCase()))
+                return field.getType();
+        }
+
+        return new ErrorType(line, column,
+                String.format("[TYPE CHECKING] There is no field with the identifier %s", fieldName));
+    }
+
 }

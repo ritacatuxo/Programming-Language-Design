@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.definitions.VarDefinition;
+import ast.expressions.Expression;
 import ast.semantic.visitor.Visitor;
 
 import java.util.ArrayList;
@@ -37,4 +38,27 @@ public class FunctionType extends AbstractType{
     public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }
+
+    @Override
+    public Type parenthesis(int line, int column, List<Expression> paramsType ) {
+        // check the number of arguments is the same as the number of parameters
+        if (parameters.size() != paramsType.size()) {
+            if (parameters.size() > paramsType.size())
+                return new ErrorType(line, column, "[TYPE CHECKING] There are too many parameters provided in the function invocation.");
+            else
+                return new ErrorType(line, column, "[TYPE CHECKING] There are missing some parameters in the function invocation.");
+        }
+        // check the type of each argument is the same as the type each parameters
+        else {
+            for (int i = 0; i < paramsType.size(); i++) {
+
+                if (!paramsType.get(i).getType().equals(parameters.get(i).getType()))
+                    return new ErrorType(paramsType.get(i).getLine(), paramsType.get(i).getColumn(),
+                            "[TYPE CHECKING] The arguments do not match with the parameters");
+            }
+
+            return this.returnType;
+        }
+    }
+
 }

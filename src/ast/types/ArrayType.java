@@ -49,4 +49,14 @@ public class ArrayType extends AbstractType{
     public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
     }
+
+    @Override
+    public Type squareBrackets(int line, int column, Type indexer) {
+        if (indexer instanceof ErrorType)
+            return indexer;
+        if (indexer instanceof IntType)
+            return this.type;
+        return new ErrorType(line, column,
+                String.format("[TYPE CHECKING] An array cannot be indexed when the index is not an integer %s ", indexer));
+    }
 }

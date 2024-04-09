@@ -24,7 +24,6 @@ public class ErrorType extends AbstractType{
         return visitor.visit(this, param);
     }
 
-
     @Override
     public Type arithmetic(int line, int column, Type t){
         return this;
@@ -39,4 +38,37 @@ public class ErrorType extends AbstractType{
     public Type logical(int line, int column, Type t){
         return this;
     }
+
+    @Override
+    public Type comparison(int line, int column, Type t){
+        return this;
+    }
+
+    @Override
+    public Type squareBrackets(int line, int column, Type t){
+        return this;
+    }
+
+    @Override
+    public Type dot(int line, int column, String fileName){
+        return this;
+    }
+
+    @Override
+    public Type castTo(int line, int column, Type t){
+        return this;
+    }
+
+    @Override
+    public Type toUnaryMinus(int line, int column){
+        return this;
+    }
+    @Override
+    public Type toUnaryNot(int line, int column){
+        return this;
+    }
+
+
+
+
 }

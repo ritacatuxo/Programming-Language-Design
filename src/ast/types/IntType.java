@@ -65,7 +65,18 @@ public class IntType extends AbstractType{
         }
     }
 
-
+    @Override
+    public Type castTo(int line, int column, Type castTo){
+        if (castTo instanceof IntType)
+            return new IntType(line, column);
+        else if (castTo instanceof DoubleType)
+            return new DoubleType(line, column);
+        else if (castTo instanceof CharType)
+            return new CharType(line, column);
+        else
+            return new ErrorType(line, column,
+                    String.format("[TYPE CHECKING] A cast operation cannot be applied for %s and %s", this, castTo));
+    }
 
 
 }

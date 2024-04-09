@@ -3,6 +3,7 @@ package ast.expressions;
 
 import ast.statements.Statement;
 import ast.semantic.visitor.Visitor;
+import ast.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,16 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
     @Override
     public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public Type getReturnType() {
+        return null;
+    }
+
+    @Override
+    public void setReturnType(Type t) {
+
     }
 }
 

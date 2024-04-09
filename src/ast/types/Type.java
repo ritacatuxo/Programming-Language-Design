@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.ASTNode;
+import ast.expressions.Expression;
 
 import java.util.List;
 
@@ -16,8 +17,16 @@ public interface Type extends ASTNode {
     Type toUnaryMinus(int line, int column);
     Type comparison(int line, int column, Type other);
     Type dot(int line, int column, String fieldName); // fieldAccess
-    Type canCastTo(int line, int column, Type castTo);
+    Type castTo(int line, int column, Type castTo);
     Type squareBrackets(int line, int column, Type indexer);
-    Type parenthesis(int line, int column, List<Type> paramsType );
+    Type parenthesis(int line, int column, List<Expression> paramsType );
+
+    // statements
+    Type assignTo(int line, int column, Type t);
+    void mustBeReadable(int line, int column);
+    void mustBeWritable(int line, int column);
+    void mustBeBoolean(int line, int column);
+    void returnAs(int line, int column, Type t);
+
 
 }

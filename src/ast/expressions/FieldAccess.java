@@ -23,6 +23,10 @@ public class FieldAccess extends AbstractExpression{
 		this.expression = expression;
 	}
 
+	public String getFieldName() {
+		return fieldName;
+	}
+
 	@Override
 	public String toString() {
 		return "FieldAccess = " +
