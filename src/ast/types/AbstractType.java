@@ -13,6 +13,12 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
 		super(line, column);
 	}
 
+
+	@Override
+	public int numberOfBytes() {
+		return 0;
+	}
+
 	// If a type rule is not enforced, a type error is produced
 
 	@Override

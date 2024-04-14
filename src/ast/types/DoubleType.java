@@ -1,6 +1,6 @@
 package ast.types;
 
-import ast.semantic.visitor.Visitor;
+import semantic.visitor.Visitor;
 
 public class DoubleType extends AbstractType{
 
@@ -17,6 +17,11 @@ public class DoubleType extends AbstractType{
     @Override
     public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public int numberOfBytes() {
+        return 4;
     }
 
     @Override

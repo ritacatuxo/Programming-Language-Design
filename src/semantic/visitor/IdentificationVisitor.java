@@ -1,12 +1,10 @@
-package ast.semantic.visitor;
+package semantic.visitor;
 
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
 import ast.expressions.FunctionInvocation;
 import ast.expressions.Variable;
-import ast.semantic.symboltable.SymbolTable;
-import ast.statements.Read;
-import ast.statements.Statement;
+import semantic.symboltable.SymbolTable;
 import ast.types.ErrorType;
 
 /**

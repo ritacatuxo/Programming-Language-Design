@@ -2,7 +2,7 @@ package ast.definitions;
 
 import ast.statements.Statement;
 import ast.types.FunctionType;
-import ast.semantic.visitor.Visitor;
+import semantic.visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +29,10 @@ public class FuncDefinition extends AbstractDefinition{
 
     @Override
     public String toString() {
-        return "FuncDefinition{" +
-                "statements=" + statements +
-                ", varDefinitions=" + varDefinitions +
+        return "FuncDefinition { " +
+                "statements = " + statements +
+                " , varDefinitions = " + varDefinitions +
+                " , offset = " + getOffset() +
                 '}';
     }
 

@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface Type extends ASTNode {
 
+    int numberOfBytes();
+
 
     // expressions
 

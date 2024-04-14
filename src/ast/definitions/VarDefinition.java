@@ -1,12 +1,7 @@
 package ast.definitions;
 
-import ast.errorhandler.ErrorHandler;
-import ast.types.ErrorType;
 import ast.types.Type;
-import ast.semantic.visitor.Visitor;
-
-import java.util.HashMap;
-import java.util.Map;
+import semantic.visitor.Visitor;
 
 public class VarDefinition extends AbstractDefinition{
 

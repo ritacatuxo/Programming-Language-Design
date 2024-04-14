@@ -1,6 +1,6 @@
 package ast.types;
 
-import ast.semantic.visitor.Visitor;
+import semantic.visitor.Visitor;
 
 // int[13] --> size = 13 and type = IntType
 public class ArrayType extends AbstractType{
@@ -26,6 +26,11 @@ public class ArrayType extends AbstractType{
             return other;
         }
         else return new ArrayType(previousType.getLine(), previousType.getColumn(), size, previousType);
+    }
+
+    @Override
+    public int numberOfBytes() {
+        return this.size * this.type.numberOfBytes() ;
     }
 
 

@@ -1,4 +1,4 @@
-package ast.semantic.symboltable;
+package semantic.symboltable;
 
 import java.util.*;
 import ast.definitions.Definition;

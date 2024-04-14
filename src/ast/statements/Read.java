@@ -1,7 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
-import ast.semantic.visitor.Visitor;
+import semantic.visitor.Visitor;
 
 public class Read extends AbstractStatement {
 

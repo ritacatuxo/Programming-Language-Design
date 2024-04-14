@@ -1,4 +1,4 @@
-package ast.semantic.visitor;
+package semantic.visitor;
 
 import ast.Program;
 import ast.definitions.Definition;
@@ -36,7 +36,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
     }
 
     public TR visit(VarDefinition varDefinition, TP param) {
-        varDefinition.getType().accept(this, param); // tengo que hacer accept al type?
+        varDefinition.getType().accept(this, param);
         return null;
     }
 

@@ -2,7 +2,7 @@ package ast.expressions;
 
 
 import ast.statements.Statement;
-import ast.semantic.visitor.Visitor;
+import semantic.visitor.Visitor;
 import ast.types.Type;
 
 import java.util.ArrayList;

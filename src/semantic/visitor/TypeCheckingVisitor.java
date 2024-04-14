@@ -1,12 +1,9 @@
-package ast.semantic.visitor;
+package semantic.visitor;
 
 import ast.definitions.FuncDefinition;
 import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 

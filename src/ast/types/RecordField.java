@@ -1,7 +1,7 @@
 package ast.types;
 
 import ast.ASTNode;
-import ast.semantic.visitor.Visitor;
+import semantic.visitor.Visitor;
 
 // Struct {
 //     int field; <-- NO SON VARDEFINITINS bc necesitan .field
@@ -12,6 +12,7 @@ public class RecordField implements ASTNode {
     private int column;
     private Type type;
     private String fieldName;
+    private int offset;
 
     public RecordField(int line, int column, Type type, String fieldName) {
 
@@ -48,6 +49,13 @@ public class RecordField implements ASTNode {
         return fieldName;
     }
 
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
 
     @Override
     public String toString() {

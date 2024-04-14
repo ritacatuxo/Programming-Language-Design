@@ -1,6 +1,6 @@
 package ast.types;
 
-import ast.semantic.visitor.Visitor;
+import semantic.visitor.Visitor;
 
 public class IntType extends AbstractType{
 
@@ -18,6 +18,11 @@ public class IntType extends AbstractType{
     @Override
     public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {
         return visitor.visit(this, param);
+    }
+
+    @Override
+    public int numberOfBytes() {
+        return 2;
     }
 
     // type checking

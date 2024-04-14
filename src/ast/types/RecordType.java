@@ -1,7 +1,6 @@
 package ast.types;
 
-import ast.errorhandler.ErrorHandler;
-import ast.semantic.visitor.Visitor;
+import semantic.visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
