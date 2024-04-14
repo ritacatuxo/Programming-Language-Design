@@ -25,7 +25,14 @@ public class IntType extends AbstractType{
     public Type arithmetic(int line, int column, Type t){
         if (t instanceof ErrorType)
             return t;
-        return new IntType(line, column);
+        if (t instanceof IntType)
+            return new IntType(line, column);
+        if (t instanceof CharType) // char + int = int ('a' = ASCII code)
+            return new IntType(line, column);
+        return new ErrorType(line, column,
+                String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "]" +
+                        "An arithmetic operation cannot be performed for the types integer and %s", t));
+
     }
 
     @Override
@@ -39,7 +46,11 @@ public class IntType extends AbstractType{
     public Type logical(int line, int column, Type t) {
         if (t instanceof ErrorType)
             return t;
-        return new IntType(line, column);
+        if(t instanceof IntType)
+            return new IntType(line, column);
+        return new ErrorType(line, column,
+                String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "A logical operation cannot be performed for the types integer and %s", t));
     }
 
     @Override
@@ -56,13 +67,14 @@ public class IntType extends AbstractType{
      */
     @Override
     public Type comparison(int line, int column, Type t)  {
-
-        if (t instanceof IntType) {
+        if(t instanceof ErrorType)
+            return t;
+        if (t instanceof IntType)
             return new IntType(line, column);
-        } else {
-            return new ErrorType(line, column,
-                    String.format("[TYPE CHECKING] A comparison operation cannot be performed for the types integer and %s", t));
-        }
+
+        return new ErrorType(line, column,
+                String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "A comparison operation cannot be performed for the types integer and %s", t));
     }
 
     @Override
@@ -73,9 +85,32 @@ public class IntType extends AbstractType{
             return new DoubleType(line, column);
         else if (castTo instanceof CharType)
             return new CharType(line, column);
-        else
+        else {
             return new ErrorType(line, column,
-                    String.format("[TYPE CHECKING] A cast operation cannot be applied for %s and %s", this, castTo));
+                    String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                            "A cast operation cannot be applied for %s and %s", this, castTo));
+        }
+    }
+
+    @Override
+    public Type assignTo(int line, int column, Type t) {
+        if (t instanceof ErrorType)
+            return t;
+        if (t instanceof IntType)
+            return t;
+        return new ErrorType(line, column,
+                String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "An assignment operation cannot be performed for the types int and %s", t));
+    }
+
+    @Override
+    public void mustBeReadable(int line, int column){
+
+    }
+
+    @Override
+    public void mustBeWritable(int line, int column){
+
     }
 
 

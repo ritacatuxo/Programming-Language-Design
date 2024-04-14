@@ -1,4 +1,4 @@
-struct  { 
+ struct  {
   int day;
   int month;
   double day; // * Error 1

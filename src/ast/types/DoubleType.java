@@ -21,7 +21,14 @@ public class DoubleType extends AbstractType{
 
     @Override
     public Type arithmetic(int line, int column, Type t){
-        return new DoubleType(line, column);
+        if (t instanceof ErrorType)
+            return t;
+        if (t instanceof DoubleType)
+            return this;
+        return new ErrorType(line, column, String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                "An arithmetic cannot be performed for the types %s and %s.", t, this
+        ));
+
     }
 
     @Override
@@ -31,13 +38,14 @@ public class DoubleType extends AbstractType{
 
     @Override
     public Type comparison(int line, int column, Type t)  {
-
-        if (t instanceof DoubleType) {
+        if (t instanceof ErrorType)
+            return t;
+        if (t instanceof DoubleType)
             return new IntType(line, column);
-        } else {
-            return new ErrorType(line, column,
-                    String.format("[TYPE CHECKING] A comparison operation cannot be performed for the types double and %s", t));
-        }
+        return new ErrorType(line, column,
+                String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "A comparison operation cannot be performed for the types double and %s", t));
+
     }
 
     @Override
@@ -50,6 +58,27 @@ public class DoubleType extends AbstractType{
             return new CharType(line, column);
         else
             return new ErrorType(line, column,
-                    String.format("[TYPE CHECKING] A cast operation cannot be applied for %s and %s", this, castTo));
+                    String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                            " A cast operation cannot be applied for %s and %s", this, castTo));
+    }
+
+    @Override
+    public Type assignTo(int line, int column, Type t) {
+        if (t instanceof ErrorType)
+            return t;
+        if (t instanceof DoubleType)
+            return t;
+        return new ErrorType(line, column,
+                String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "An assignment operation cannot be performed for the types %s and double", t));
+    }
+
+
+    @Override
+    public void mustBeReadable(int line, int column){
+    }
+
+    @Override
+    public void mustBeWritable(int line, int column){
     }
 }

@@ -35,19 +35,16 @@ public class Main {
 		Visitor identificationVisitor = new IdentificationVisitor();
 		ast.accept(identificationVisitor, null);
 
-		/*if (ErrorHandler.getInstance().anyErrors())
-			ErrorHandler.getInstance().showErrors(System.err);
-		else {
-			// * The AST is shown if no errors exist
-			IntrospectorModel model = new IntrospectorModel("Program", ast);
-			new IntrospectorView("Introspector", model);
-		}*/
 
 		// LAB09 - TYPE CHECKING
 		System.out.println();
 		System.out.println("Running Type Checking Visitor...");
-		Visitor typeChecking = new TypeCheckingVisitor();
-		ast.accept(typeChecking, null);
+		//Visitor typeChecking = new TypeCheckingVisitor();
+		//ast.accept(typeChecking, null);
+
+		Visitor v = new TypeCheckingVisitor();
+		v.visit(ast, null);
+
 
 		if (ErrorHandler.getInstance().anyErrors()) {
 			ErrorHandler.getInstance().showErrors(System.err);

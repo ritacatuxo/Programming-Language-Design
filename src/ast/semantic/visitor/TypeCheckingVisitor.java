@@ -19,6 +19,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 
     @Override
     public Void visit(Arithmetic arith, Void param) {
+        super.visit(arith,param);
 
         arith.setLvalue(false);
 
@@ -30,6 +31,8 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 
     @Override
     public Void visit(Cast c, Void param) {
+        super.visit(c,param);
+
         c.setLvalue(false);
 
         // expression1.type = expression2.type.castTo(type)
@@ -41,11 +44,14 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     @Override
     public Void visit(CharLiteral charLiteral, Void param) {
         charLiteral.setLvalue(false);
+        charLiteral.setType(new CharType(charLiteral.getLine(), charLiteral.getColumn()));
         return null;
     }
 
     @Override
     public Void visit(Comparison com, Void param) {
+        super.visit(com,param);
+
         com.setLvalue(false);
 
         // expression1.type = expression2.type.com(expression3.type)
@@ -57,11 +63,14 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     @Override
     public Void visit(DoubleLiteral doubleLiteral, Void param) {
         doubleLiteral.setLvalue(false);
+        doubleLiteral.setType(new DoubleType(doubleLiteral.getLine(), doubleLiteral.getColumn()));
         return null;
     }
 
     @Override
     public Void visit(FieldAccess fieldAccess, Void param) {
+        super.visit(fieldAccess,param);
+
         fieldAccess.setLvalue(true);
 
         // expression1.type = expression2.type.dot(ID)
@@ -72,6 +81,8 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 
     @Override
     public Void visit(FunctionInvocation fi, Void param) {
+        super.visit(fi,param);
+
         fi.setLvalue(false);
 
         // expression1.type = expression2.type.parenthesis(
@@ -85,6 +96,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     // v[3] -> v es una variable (lvalue=true) y 3 es IntLiteral (lvalue=false)
     @Override
     public Void visit(Indexing indexing, Void param) {
+        super.visit(indexing,param);
         indexing.setLvalue(true);
 
         // expression1.type = expression2.type.squareBrackets(expression3.type)
@@ -96,11 +108,14 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     @Override
     public Void visit(IntLiteral intLiteral, Void param) {
         intLiteral.setLvalue(false);
+        intLiteral.setType(new IntType(intLiteral.getLine(), intLiteral.getColumn()));
         return null;
     }
 
     @Override
     public Void visit(Logical log, Void param) {
+        super.visit(log,param);
+
         log.setLvalue(false);
 
         // expression1.type = expression2.type.log(expression3.type)
@@ -113,6 +128,8 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     // a % 3 -> it is arithmetic -> false
     @Override
     public Void visit(Modulus mod, Void param) {
+        super.visit(mod,param);
+
         mod.setLvalue(false);
 
         // type checking
@@ -124,24 +141,30 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 
     @Override
     public Void visit(UnaryNot negation, Void param) {
+        super.visit(negation,param);
+
         negation.setLvalue(false);
 
         // expression1.type = expression2.type.toUnaryNot()
-        negation.getType().toUnaryNot(negation.getLine(), negation.getColumn());
+        negation.setType(negation.getExpression().getType().toUnaryNot(negation.getLine(), negation.getColumn()));
         return null;
     }
 
     @Override
     public Void visit(UnaryMinus unaryMinus, Void param) {
+        super.visit(unaryMinus,param);
+
         unaryMinus.setLvalue(false);
 
         // expression1.type = expression2.type.toUnaryNot()
-        unaryMinus.getType().toUnaryMinus(unaryMinus.getLine(), unaryMinus.getColumn());
+        unaryMinus.setType(unaryMinus.getExp().getType().toUnaryMinus(unaryMinus.getLine(), unaryMinus.getColumn()));
         return null;
     }
 
     @Override
     public Void visit(Variable variable, Void param) {
+        super.visit(variable,param);
+
         variable.setLvalue(true);
 
         // expression.type = expression.definition.type
@@ -153,6 +176,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     // --- statements
 
     public Void visit(Assignment assignment, Void param) {
+        super.visit(assignment,param);
 
         // semantic error - if left lvalue = false
         if(!assignment.getLeft().getLvalue())
@@ -166,6 +190,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     }
 
     public Void visit(Read read, Void param) {
+        super.visit(read,param);
 
         if(!read.getExpression().getLvalue()){
             new ErrorType(read.getLine(), read.getColumn(), "[SEMANTIC ERROR] [Line: " + read.getLine() +
@@ -179,6 +204,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     }
 
     public Void visit(Write write, Void param) {
+        super.visit(write,param);
 
         // expression.type.mustBeWritable()
         write.getExpression().getType().mustBeWritable(write.getLine(), write.getColumn());
@@ -186,14 +212,18 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     }
 
     public Void visit(While whileStmt, Void param){
+        super.visit(whileStmt,param);
+
         // expression.type.mustBeBoolean()
-        whileStmt.getExpression().getType().mustBeBoolean(whileStmt.getLine(), whileStmt.getColumn());
+        whileStmt.getExpression().getType().mustBeBoolean(whileStmt.getExpression().getLine(), whileStmt.getExpression().getColumn());
         // pass the info down
         whileStmt.getBody().forEach(s -> s.setReturnType(whileStmt.getReturnType()));
         return null;
     }
 
     public Void visit(IfElse ifElse, Void param){
+        super.visit(ifElse,param);
+
         // expression.type.mustBeBoolean()
         ifElse.getCondition().getType().mustBeBoolean(ifElse.getLine(), ifElse.getColumn());
         // pass the info down
@@ -205,6 +235,8 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
     }
 
     public Void visit(Return ret, Void param) {
+        super.visit(ret,param);
+
         // expression.type.returnAs(statement.returnType)
             ret.getRet().getType().returnAs(ret.getLine(), ret.getColumn(), ret.getReturnType());
         return null;
@@ -212,6 +244,10 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 
     // --- definitions
     public Void visit(FuncDefinition fd, Void param) {
+        super.visit(fd,param);
+
+        fd.getStatements().forEach(st -> st.setReturnType(((FunctionType) fd.getType()).getReturnType()));
+
         // statement*.forEach(stmt -> stmt.returnType = definition.type.returnType))
         Type returnType = ((FunctionType) fd.getType()).getReturnType();
         fd.getStatements().forEach(s -> s.setReturnType(returnType));

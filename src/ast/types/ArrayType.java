@@ -57,6 +57,7 @@ public class ArrayType extends AbstractType{
         if (indexer instanceof IntType)
             return this.type;
         return new ErrorType(line, column,
-                String.format("[TYPE CHECKING] An array cannot be indexed when the index is not an integer %s ", indexer));
+                String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "An array cannot be indexed when the index is not an integer %s ", indexer));
     }
 }

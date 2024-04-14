@@ -10,12 +10,15 @@ public class DoubleLiteral extends AbstractExpression{
         this.value = value;
     }
 
+
+
     @Override
     public String toString() {
         return "DoubleLiteral{" +
                 "value=" + value +
                 '}';
     }
+
 
     @Override
     public <TR, TP> TR accept(Visitor<TP, TR> visitor, TP param) {

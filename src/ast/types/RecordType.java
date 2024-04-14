@@ -17,38 +17,34 @@ public class RecordType extends AbstractType {
     }
 
 
-    private void checkDuplicatedFields(List<RecordField> recordFields){
-
-        List<String> fieldNames = new ArrayList<>();
-        for(RecordField field : recordFields)
-        {
-            if(checkFieldName(field.getFieldName()) || fieldNames.contains(field.getFieldName())) {
-                ErrorType error = new ErrorType(field.getLine(), field.getColumn(), String.format("The struct field \"%s\" has already been defined.", field.getFieldName()));
-                ErrorHandler.getInstance().addError(error);
-                System.out.println("aaaaa" + field.getFieldName());
-            }
-            else
-                fieldNames.add(field.getFieldName());
-        }
-
-    }
 
     /**
-     * Checks whether the recordFIelds attribute contains any attribute with the same fieldName as the one passed as paameter
+     * Adss all the recordFields passed as parameter to the fields of the RecordType, by checking whether they repeated
      */
-    private boolean checkFieldName(String fieldName){
-        for(RecordField recordField : this.recordFields){
-            if(recordField.getFieldName().equals(fieldName))
+    public void addRecordFields(List<RecordField> recordFields) {
+
+        for(RecordField field : recordFields)
+        {
+            if(repeatedFieldName(field)) {
+                new ErrorType(field.getLine(), field.getColumn(),
+                        String.format("The struct field \"%s\" has already been defined.", field.getFieldName()));
+            }
+            else {
+                this.recordFields.add(field);
+            }
+        }
+
+        //this.recordFields.addAll(fields);
+    }
+
+    private boolean repeatedFieldName(RecordField rf){
+        for(RecordField recordFile : this.recordFields){
+            if(recordFile.getFieldName().equals(rf.getFieldName()))
                 return true;
         }
         return false;
     }
 
-    public void addRecordFields(List<RecordField> recordFields) {
-
-        checkDuplicatedFields(recordFields);
-        this.recordFields.addAll(recordFields);
-    }
 
     public List<RecordField> getRecordFields() {
         return recordFields;
@@ -73,7 +69,9 @@ public class RecordType extends AbstractType {
         }
 
         return new ErrorType(line, column,
-                String.format("[TYPE CHECKING] There is no field with the identifier %s", fieldName));
+                String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "There is no field with the identifier %s", fieldName));
+
     }
 
 }

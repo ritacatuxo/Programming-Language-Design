@@ -43,10 +43,12 @@ public class FunctionType extends AbstractType{
     public Type parenthesis(int line, int column, List<Expression> paramsType ) {
         // check the number of arguments is the same as the number of parameters
         if (parameters.size() != paramsType.size()) {
-            if (parameters.size() > paramsType.size())
-                return new ErrorType(line, column, "[TYPE CHECKING] There are too many parameters provided in the function invocation.");
+            if (parameters.size() > paramsType.size()) // we need more params
+                return new ErrorType(line, column, "[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "There are missing some parameters in the function invocation.");
             else
-                return new ErrorType(line, column, "[TYPE CHECKING] There are missing some parameters in the function invocation.");
+                return new ErrorType(line, column, "[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "There are too many parameters provided in the function invocation.");
         }
         // check the type of each argument is the same as the type each parameters
         else {
@@ -54,7 +56,8 @@ public class FunctionType extends AbstractType{
 
                 if (!paramsType.get(i).getType().equals(parameters.get(i).getType()))
                     return new ErrorType(paramsType.get(i).getLine(), paramsType.get(i).getColumn(),
-                            "[TYPE CHECKING] The arguments do not match with the parameters");
+                            "[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "The arguments do not match with the parameters");
             }
 
             return this.returnType;

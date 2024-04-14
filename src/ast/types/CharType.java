@@ -23,6 +23,12 @@ public class CharType extends AbstractType{
 
     @Override
     public Type arithmetic(int line, int column, Type t){
+        if(t instanceof ErrorType)
+            return t;
+        if(t instanceof CharType)
+            return new IntType(line, column);
+        if(t instanceof IntType) // char + int = int ('a' = ASCII code)
+            return new IntType(line, column);
         return new CharType(line, column);
     }
 
@@ -38,7 +44,8 @@ public class CharType extends AbstractType{
             return new IntType(line, column);
         } else {
             return new ErrorType(line, column,
-                    String.format("[TYPE CHECKING] A comparison operation cannot be performed for the types char and %s", t));
+                    String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "]" +
+                            "A comparison operation cannot be performed for the types char and %s", t));
         }
     }
 
@@ -52,6 +59,26 @@ public class CharType extends AbstractType{
             return new CharType(line, column);
         else
             return new ErrorType(line, column,
-                    String.format("[TYPE CHECKING] A cast operation cannot be applied for %s and %s", this, castTo));
+                    String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "]" +
+                            "A cast operation cannot be applied for %s and %s", this, castTo));
+    }
+
+    @Override
+    public Type assignTo(int line, int column, Type t) {
+        if (t instanceof ErrorType)
+            return t;
+        if (t instanceof CharType)
+            return t;
+        return new ErrorType(line, column,
+                String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                        "An assignment operation cannot be performed for the types char and %s", t));
+    }
+
+    @Override
+    public void mustBeReadable(int line, int column){
+    }
+
+    @Override
+    public void mustBeWritable(int line, int column){
     }
 }
