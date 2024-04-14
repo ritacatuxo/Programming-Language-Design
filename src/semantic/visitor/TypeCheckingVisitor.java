@@ -235,15 +235,13 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
         super.visit(ret,param);
 
         // expression.type.returnAs(statement.returnType)
-            ret.getRet().getType().returnAs(ret.getLine(), ret.getColumn(), ret.getReturnType());
+        ret.getRet().getType().returnAs(ret.getLine(), ret.getColumn(), ret.getReturnType());
         return null;
     }
 
     // --- definitions
     public Void visit(FuncDefinition fd, Void param) {
         super.visit(fd,param);
-
-        fd.getStatements().forEach(st -> st.setReturnType(((FunctionType) fd.getType()).getReturnType()));
 
         // statement*.forEach(stmt -> stmt.returnType = definition.type.returnType))
         Type returnType = ((FunctionType) fd.getType()).getReturnType();
