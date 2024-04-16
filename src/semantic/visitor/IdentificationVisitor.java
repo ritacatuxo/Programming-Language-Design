@@ -67,6 +67,7 @@ public class IdentificationVisitor extends AbstractVisitor<Void, Void>{
         }
         else {
             fi.getVar().setDefinition(symbolTable.find(fi.getVar().getName()));
+            super.visit(fi, null);
         }
         return null;
     }
