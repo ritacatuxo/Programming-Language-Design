@@ -1,6 +1,6 @@
 package ast.expressions;
 
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class CharLiteral extends AbstractExpression{
 
@@ -8,6 +8,10 @@ public class CharLiteral extends AbstractExpression{
     public CharLiteral(int line, int column, char value){
         super(line, column);
         this.value = value;
+    }
+
+    public char getValue() {
+        return value;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package ast.expressions;
 
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class DoubleLiteral extends AbstractExpression{
 
@@ -11,6 +11,9 @@ public class DoubleLiteral extends AbstractExpression{
     }
 
 
+    public double getValue() {
+        return value;
+    }
 
     @Override
     public String toString() {

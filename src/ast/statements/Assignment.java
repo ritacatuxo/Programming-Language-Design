@@ -1,7 +1,7 @@
 package ast.statements;
 
 import ast.expressions.Expression;
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class Assignment extends AbstractStatement {
 

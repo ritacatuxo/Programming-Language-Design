@@ -1,6 +1,6 @@
 package ast.expressions;
 
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class Comparison extends AbstractExpression{
 
@@ -26,6 +26,10 @@ public class Comparison extends AbstractExpression{
 
 	public Expression getRight() {
 		return right;
+	}
+
+	public String getOperator() {
+		return operator;
 	}
 
 	@Override

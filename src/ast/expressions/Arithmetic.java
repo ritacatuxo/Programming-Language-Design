@@ -1,7 +1,7 @@
 package ast.expressions;
 
 
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class Arithmetic extends AbstractExpression {
 
@@ -32,6 +32,10 @@ public class Arithmetic extends AbstractExpression {
 
 	public Expression getRight() {
 		return right;
+	}
+
+	public String getOperator() {
+		return operator;
 	}
 
 	@Override

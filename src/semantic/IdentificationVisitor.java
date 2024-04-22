@@ -1,4 +1,4 @@
-package semantic.visitor;
+package semantic;
 
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
@@ -6,11 +6,12 @@ import ast.expressions.FunctionInvocation;
 import ast.expressions.Variable;
 import semantic.symboltable.SymbolTable;
 import ast.types.ErrorType;
+import visitor.AbstractVisitor;
 
 /**
  * t¡Visitor to link all Variable nodes to their Definition
  */
-public class IdentificationVisitor extends AbstractVisitor<Void, Void>{
+public class IdentificationVisitor extends AbstractVisitor<Void, Void> {
 
     private SymbolTable symbolTable = new SymbolTable();
 

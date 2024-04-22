@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ast.expressions.Expression;
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class IfElse extends AbstractStatement {
 

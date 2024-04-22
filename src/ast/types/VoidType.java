@@ -1,6 +1,6 @@
 package ast.types;
 
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class VoidType extends AbstractType{
 

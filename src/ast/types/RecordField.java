@@ -1,7 +1,7 @@
 package ast.types;
 
 import ast.ASTNode;
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 // Struct {
 //     int field; <-- NO SON VARDEFINITINS bc necesitan .field

@@ -1,6 +1,6 @@
 package ast.types;
 
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class CharType extends AbstractType{
 
@@ -10,7 +10,9 @@ public class CharType extends AbstractType{
     }
 
 
-
+    public static CharType getInstance(){
+        return new CharType(0,0);
+    }
     @Override
     public String toString() {
         return "char";
@@ -24,6 +26,11 @@ public class CharType extends AbstractType{
     @Override
     public int numberOfBytes() {
         return 1;
+    }
+
+    @Override
+    public String getSuffix() {
+        return "b";
     }
 
     @Override

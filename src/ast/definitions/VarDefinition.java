@@ -1,7 +1,7 @@
 package ast.definitions;
 
 import ast.types.Type;
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class VarDefinition extends AbstractDefinition{
 

@@ -1,6 +1,6 @@
 package ast.expressions;
 
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class IntLiteral extends AbstractExpression{
 
@@ -10,6 +10,10 @@ public class IntLiteral extends AbstractExpression{
 		super(line, column);
 		this.value = value;
 
+	}
+
+	public int getValue() {
+		return value;
 	}
 
 	@Override

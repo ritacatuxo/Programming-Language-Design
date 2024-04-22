@@ -1,4 +1,4 @@
-package semantic.visitor;
+package visitor;
 
 import ast.Program;
 import ast.definitions.Definition;
@@ -7,6 +7,7 @@ import ast.definitions.VarDefinition;
 import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
+import visitor.Visitor;
 
 // abstract visitor must be generic
 public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {

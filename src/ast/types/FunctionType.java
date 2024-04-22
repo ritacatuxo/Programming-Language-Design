@@ -2,7 +2,7 @@ package ast.types;
 
 import ast.definitions.VarDefinition;
 import ast.expressions.Expression;
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;

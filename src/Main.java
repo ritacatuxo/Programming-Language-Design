@@ -3,9 +3,9 @@ import ast.errorhandler.ErrorHandler;
 import codegeneration.OffsetVisitor;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
-import semantic.visitor.IdentificationVisitor;
-import semantic.visitor.TypeCheckingVisitor;
-import semantic.visitor.Visitor;
+import semantic.IdentificationVisitor;
+import semantic.TypeCheckingVisitor;
+import visitor.Visitor;
 import parser.*;
 
 import org.antlr.v4.runtime.*;

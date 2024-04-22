@@ -1,9 +1,10 @@
-package semantic.visitor;
+package semantic;
 
 import ast.definitions.FuncDefinition;
 import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
+import visitor.AbstractVisitor;
 
 public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 

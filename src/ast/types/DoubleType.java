@@ -1,6 +1,6 @@
 package ast.types;
 
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class DoubleType extends AbstractType{
 
@@ -9,6 +9,9 @@ public class DoubleType extends AbstractType{
     }
 
 
+    public static DoubleType getInstance(){
+        return new DoubleType(0,0);
+    }
     @Override
     public String toString() {
         return "double";
@@ -22,6 +25,10 @@ public class DoubleType extends AbstractType{
     @Override
     public int numberOfBytes() {
         return 4;
+    }
+    @Override
+    public String getSuffix() {
+        return "f";
     }
 
     @Override

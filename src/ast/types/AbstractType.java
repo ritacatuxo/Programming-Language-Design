@@ -13,6 +13,10 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
 		super(line, column);
 	}
 
+	@Override
+	public String getSuffix() {
+		throw new RuntimeException("suffix() called for " + this.getClass());
+	}
 
 	@Override
 	public int numberOfBytes() {

@@ -5,7 +5,7 @@ import ast.definitions.VarDefinition;
 import ast.types.FunctionType;
 import ast.types.RecordField;
 import ast.types.RecordType;
-import semantic.visitor.AbstractVisitor;
+import visitor.AbstractVisitor;
 
 public class OffsetVisitor extends AbstractVisitor<Void, Void> {
 

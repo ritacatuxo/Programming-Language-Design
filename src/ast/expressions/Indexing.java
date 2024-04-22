@@ -1,7 +1,7 @@
 package ast.expressions;
 
 
-import semantic.visitor.Visitor;
+import visitor.Visitor;
 
 public class Indexing extends AbstractExpression {
 

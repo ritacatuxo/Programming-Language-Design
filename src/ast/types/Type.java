@@ -9,6 +9,9 @@ public interface Type extends ASTNode {
 
     int numberOfBytes();
 
+    // suffix that the type uses for instructions
+    String getSuffix();
+
 
     // expressions
 
