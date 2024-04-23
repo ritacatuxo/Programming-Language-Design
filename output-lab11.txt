@@ -1,0 +1,11 @@
+' Invocation to the main function
+	call main
+	halt
+	' * char c  (offset 0 )
+	' * int a  (offset 0 )
+	' * double r  (offset 0 )
+	' * int i  (offset 0 )
+
+#line 6
+main:
+	' * Parameters:	' * Local variables:	enter 0

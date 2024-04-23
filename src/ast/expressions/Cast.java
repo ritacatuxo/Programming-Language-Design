@@ -20,7 +20,8 @@ public class Cast extends AbstractExpression{
 		return castType;
 	}
 
-	public void setType(Type castTo) {
+
+	public void setCastType(Type castTo) {
 		this.castType = castTo;
 	}
 

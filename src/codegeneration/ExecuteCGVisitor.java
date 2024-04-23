@@ -114,7 +114,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         }
 
         List<VarDefinition> locals = funcDefinition.getVarDefinitions();
-        int totalLocalBytes = locals.get(locals.size() - 1).getOffset();
+        int totalLocalBytes = funcDefinition.getVarDefinitions().isEmpty() ? 0 : locals.get(locals.size() - 1).getOffset();
         cg.comment("\tenter " + totalLocalBytes);
 
         return null;

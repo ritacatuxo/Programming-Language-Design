@@ -1,5 +1,6 @@
 import ast.Program;
 import ast.errorhandler.ErrorHandler;
+import codegeneration.CGManager;
 import codegeneration.OffsetVisitor;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorView;
@@ -16,10 +17,14 @@ public class Main {
 
 		// CODE FOR PARSER ------------------------
 
-		if (args.length < 1) {
-			System.err.println("Please, pass me the input file.");
+		if (args.length < 2) {
+			System.err.println("Please, pass both the input and output files");
 			return;
 		}
+
+		String inputFilepath = args[0];
+		String outputFilepath = args[1];
+		System.out.println("Processing '" + inputFilepath + "' into '" + outputFilepath + "'...");
 
 		// create a lexer that feeds off of input CharStream
 		CharStream input = CharStreams.fromFileName(args[0]);
@@ -62,6 +67,12 @@ public class Main {
 				new IntrospectorView("Introspector", model);
 			}
 		}
+
+
+		System.out.println();
+		System.out.println("Running Code Generation Visitors...");
+		CGManager cgm = new CGManager(inputFilepath, outputFilepath);
+		cgm.run(ast);
 
 
 	}

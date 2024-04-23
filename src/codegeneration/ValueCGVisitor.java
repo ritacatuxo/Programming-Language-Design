@@ -5,7 +5,7 @@ import ast.expressions.*;
 public class ValueCGVisitor extends AbstractCGVisitor<Object, Void>{
 
     private final CodeGenerator cg;
-    private final AddressCGVisitor addressCGVisitor;
+    private AddressCGVisitor addressCGVisitor;
 
     public ValueCGVisitor(CodeGenerator cg, AddressCGVisitor addressCGVisitor) {
         this.cg = cg;
@@ -172,4 +172,10 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object, Void>{
         cg.convertTo(cast.getExpression().getType(), cast.getCastType());
         return null;
     }
+
+    public void setAddressCGVisitor(AddressCGVisitor address) {
+        this.addressCGVisitor = address;
+    }
+
+
 }

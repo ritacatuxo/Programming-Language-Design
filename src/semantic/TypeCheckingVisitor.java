@@ -24,6 +24,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
         // type checking
         arith.setType(arith.getLeft().getType()
                 .arithmetic(arith.getLine(), arith.getColumn(), arith.getRight().getType()));
+
         return null;
     }
 
@@ -34,8 +35,7 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
         c.setLvalue(false);
 
         // expression1.type = expression2.type.castTo(type)
-        c.setType(c.getExpression().getType()
-                .castTo(c.getLine(), c.getColumn(), c.getCastType()));
+        c.setType(c.getExpression().getType().castTo(c.getLine(), c.getColumn(), c.getCastType()));
         return null;
     }
 
