@@ -34,7 +34,6 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
     public Void visit(Read read, Object param) {
         cg.line(read.getLine());
         cg.comment("\t' * Read\n");
-
         read.getExpression().accept(addressCGVisitor, param);
 
         cg.in(read.getExpression().getType());
@@ -107,7 +106,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         String exitLabel = cg.nextLabel();
         cg.line(whileStmt.getLine());
 
-        cg.comment("\t' * While");
+        cg.comment("\t' * While\n");
         cg.comment(condLabel + ":\n");
 
         whileStmt.getExpression().accept(valueCGVisitor, param);
@@ -142,7 +141,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         String exitLabel = cg.nextLabel();
 
         cg.line(ifElse.getLine());
-        cg.comment("\t' * If\n");
+        cg.comment("\t' * If statement\n");
 
         ifElse.getCondition().accept(valueCGVisitor, param);
         cg.jz(elseLabel);

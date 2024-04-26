@@ -15,7 +15,7 @@ main:
 	enter 54
 #line 13
 	' * Read
-	push BP 
+	push bp 
 	pushi -54
 	addi
 	pushi 0
@@ -24,7 +24,7 @@ main:
 	storei
 
 #line 14
-	push BP 
+	push bp 
 	pushi -54
 	addi
 	pushi 4
@@ -34,17 +34,21 @@ main:
 	storei
 
 #line 15
-	push BP 
+	push bp 
 	pushi -54
 	addi
 	pushi 2
 	addi
-	push BP 
+	push bp 
 	pushi -54
 	addi
+	pushi 0
+	addi
 	loadi
-	push BP 
+	push bp 
 	pushi -54
+	addi
+	pushi 4
 	addi
 	loadi
 	muli
@@ -56,8 +60,10 @@ main:
 
 #line 16
 	' * Write 
-	push BP 
+	push bp 
 	pushi -54
+	addi
+	pushi 0
 	addi
 	loadi
 	outi
@@ -69,8 +75,10 @@ main:
 
 #line 16
 	' * Write 
-	push BP 
+	push bp 
 	pushi -54
+	addi
+	pushi 2
 	addi
 	loadi
 	outi
@@ -82,8 +90,10 @@ main:
 
 #line 16
 	' * Write 
-	push BP 
+	push bp 
 	pushi -54
+	addi
+	pushi 4
 	addi
 	loadi
 	i2f
@@ -96,39 +106,40 @@ main:
 
 #line 18
 	' * Read
-	push BP 
+	push bp 
 	pushi -4
 	addi
 	inf
 	storef
 
 #line 20
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	pushi 0
 	storei
 
 #line 21
-	' * Whilelabel0:
-	push BP 
+	' * While
+ label0:
+	push bp 
 	pushi -6
 	addi
 	loadi
 	pushi 10
 	lti
-jz label1
+	jz  label1
 
 #line 22
 	pusha 0
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	loadi
 	pushi 4
 	muli
 	addi
-	push BP 
+	push bp 
 	pushi -4
 	addi
 	loadf
@@ -136,7 +147,7 @@ jz label1
 
 #line 23
 	' * Write 
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	loadi
@@ -150,7 +161,7 @@ jz label1
 #line 23
 	' * Write 
 	pusha 0
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	loadi
@@ -166,14 +177,14 @@ jz label1
 	outb
 
 #line 24
-	' * If
-	push BP 
+	' * If statement
+	push bp 
 	pushi -6
 	addi
 	loadi
 	pushi 2
 	modi
-jz label2
+	jz  label2
 
 #line 25
 	' * Write 
@@ -194,8 +205,8 @@ jz label2
 	' * Write 
 	pushb 10
 	outb
-jmp label3
-label2:
+	jmp  label3
+ label2:
 
 #line 27
 	' * Write 
@@ -221,21 +232,21 @@ label2:
 	' * Write 
 	pushb 10
 	outb
-label3:
+ label3:
 
 #line 28
-	push BP 
+	push bp 
 	pushi -6
 	addi
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	loadi
 	pushi 1
 	addi
 	storei
-jmp label0
-label1:
+	jmp  label0
+ label1:
 
 #line 30
 	' * Write 
@@ -243,62 +254,64 @@ label1:
 	outb
 
 #line 32
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	pushi 0
 	storei
 
 #line 33
-	' * Whilelabel4:
-	push BP 
+	' * While
+ label4:
+	push bp 
 	pushi -6
 	addi
 	loadi
 	pushi 4
 	lti
-jz label5
+	jz  label5
 
 #line 34
-	push BP 
+	push bp 
 	pushi -8
 	addi
 	pushi 0
 	storei
 
 #line 35
-	' * Whilelabel6:
-	push BP 
+	' * While
+ label6:
+	push bp 
 	pushi -8
 	addi
 	loadi
 	pushi 5
 	lti
-jz label7
+	jz  label7
 
 #line 36
-	push BP 
+	push bp 
 	pushi -48
 	addi
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	loadi
 	pushi 10
 	muli
 	addi
-	push BP 
+	push bp 
 	pushi -8
 	addi
 	loadi
 	pushi 2
 	muli
 	addi
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	loadi
-	push BP 
+	push bp 
 	pushi -8
 	addi
 	loadi
@@ -307,17 +320,17 @@ jz label7
 
 #line 37
 	' * Write 
-	push BP 
+	push bp 
 	pushi -48
 	addi
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	loadi
 	pushi 10
 	muli
 	addi
-	push BP 
+	push bp 
 	pushi -8
 	addi
 	loadi
@@ -333,18 +346,18 @@ jz label7
 	outb
 
 #line 38
-	push BP 
+	push bp 
 	pushi -8
 	addi
-	push BP 
+	push bp 
 	pushi -8
 	addi
 	loadi
 	pushi 1
 	addi
 	storei
-jmp label6
-label7:
+	jmp  label6
+ label7:
 
 #line 40
 	' * Write 
@@ -352,16 +365,16 @@ label7:
 	outb
 
 #line 41
-	push BP 
+	push bp 
 	pushi -6
 	addi
-	push BP 
+	push bp 
 	pushi -6
 	addi
 	loadi
 	pushi 1
 	addi
 	storei
-jmp label4
-label5:
+	jmp  label4
+ label5:
 	ret 0, 54, 0

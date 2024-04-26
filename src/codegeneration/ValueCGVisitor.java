@@ -201,7 +201,8 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object, Void>{
      */
     @Override
     public Void visit(FieldAccess fieldAccess, Object param) {
-        fieldAccess.getExpression().accept(addressCGVisitor, param);
+        fieldAccess.accept(addressCGVisitor, param);
+
         cg.load(fieldAccess.getType());
         return null;
     }

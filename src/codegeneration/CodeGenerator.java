@@ -72,7 +72,7 @@ public class CodeGenerator{
 
 
     public void pushBP(){
-        out.write("\tpush BP \n");
+        out.write("\tpush bp \n");
         out.flush();
     }
 
@@ -197,17 +197,17 @@ public class CodeGenerator{
 
 
     public String nextLabel(){
-        String ret = "label" + labelNumber;
+        String ret = " label" + labelNumber;
         labelNumber++;
         return ret;
     }
 
     public void jz(String label){
-        out.write("jz " + label + "\n");
+        out.write("\tjz " + label + "\n");
     }
 
     public void jmp(String label){
-        out.write("jmp " + label + "\n");
+        out.write("\tjmp " + label + "\n");
     }
 
 }
