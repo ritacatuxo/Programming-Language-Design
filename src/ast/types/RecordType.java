@@ -15,6 +15,9 @@ public class RecordType extends AbstractType {
         this.recordFields = new ArrayList<>();
     }
 
+    public int numberOfBytes() {
+        return this.recordFields.stream().mapToInt(field -> field.getType().numberOfBytes()).sum();
+    }
 
 
     /**
@@ -48,6 +51,15 @@ public class RecordType extends AbstractType {
     public List<RecordField> getRecordFields() {
         return recordFields;
     }
+
+    public RecordField getRecordFile(String fieldName) {
+        for (RecordField rf : this.recordFields) {
+            if (rf.getFieldName().equals(fieldName))
+                return rf;
+        }
+        throw new RuntimeException("There is no field with fieldName '" + fieldName + "'");
+    }
+
 
     @Override
     public String toString() {

@@ -66,6 +66,9 @@ public class IntType extends AbstractType{
                         "A logical operation cannot be performed for the types integer and %s", t));
     }
 
+    // This is the only class that is a boolean
+    public void mustBeBoolean(int line, int col) {    }
+
     @Override
     public Type toUnaryMinus(int line, int column){
         return new IntType(line, column);

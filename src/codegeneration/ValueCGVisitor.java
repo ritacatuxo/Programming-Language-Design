@@ -2,16 +2,21 @@ package codegeneration;
 
 import ast.expressions.*;
 
+// only for expressions
 public class ValueCGVisitor extends AbstractCGVisitor<Object, Void>{
 
     private final CodeGenerator cg;
     private AddressCGVisitor addressCGVisitor;
 
-    public ValueCGVisitor(CodeGenerator cg, AddressCGVisitor addressCGVisitor) {
+    public ValueCGVisitor(CodeGenerator cg) {
         this.cg = cg;
-        this.addressCGVisitor = addressCGVisitor;
     }
-    // only for expressions
+
+    public void setAddressCGVisitor(AddressCGVisitor address) {
+        this.addressCGVisitor = address;
+    }
+
+
 
     /**
      * value[[IntLiteral: expression -> INT_CONSTANT]] =
@@ -188,9 +193,29 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object, Void>{
         return null;
     }
 
-    public void setAddressCGVisitor(AddressCGVisitor address) {
-        this.addressCGVisitor = address;
+
+    /**
+     * value[[FieldAccess: expression1 -> expression2 ID]] =
+     * 	    address[[expression1]]
+     * 	    <load > expression1.type.suffix
+     */
+    @Override
+    public Void visit(FieldAccess fieldAccess, Object param) {
+        fieldAccess.getExpression().accept(addressCGVisitor, param);
+        cg.load(fieldAccess.getType());
+        return null;
     }
 
 
+    /**
+     * value[[Indexing: expression1 -> expression2 expression3]] =
+     * 	    address[[expression1]]
+     * 	    <load > expression1.type.suffix
+     */
+    @Override
+    public Void visit(Indexing indexing, Object param) {
+        indexing.accept(addressCGVisitor, param);
+        cg.load(indexing.getType());
+        return null;
+    }
 }

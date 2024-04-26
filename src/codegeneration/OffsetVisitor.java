@@ -21,6 +21,8 @@ public class OffsetVisitor extends AbstractVisitor<Void, Void> {
      *             }
      */
     public Void visit(VarDefinition varDefinition, Void param) {
+        super.visit(varDefinition, param);
+
         if (varDefinition.getScope() == 0){ // global scope
            varDefinition.setOffset(globalsBytesSum);
            globalsBytesSum += varDefinition.getType().numberOfBytes();
@@ -43,6 +45,8 @@ public class OffsetVisitor extends AbstractVisitor<Void, Void> {
      *             }
      */
     public Void visit(FuncDefinition funcDefinition, Void param) {
+        super.visit(funcDefinition, param);
+
         int localsBytesSum = 0;
 
         for (VarDefinition varDef : funcDefinition.getVarDefinitions()) {
@@ -64,6 +68,8 @@ public class OffsetVisitor extends AbstractVisitor<Void, Void> {
      *      }
      */
     public Void visit(FunctionType functionType, Void param) {
+        super.visit(functionType, param);
+
         int paramsBytesSum = 0;
 
         for(VarDefinition varDef : functionType.getParameters()) {
@@ -86,6 +92,8 @@ public class OffsetVisitor extends AbstractVisitor<Void, Void> {
      *             }
      */
     public Void visit(RecordType recordType, Void param) {
+        super.visit(recordType, param);
+
         int fieldsBytesSum = 0;
 
         for(RecordField rf : recordType.getRecordFields()){

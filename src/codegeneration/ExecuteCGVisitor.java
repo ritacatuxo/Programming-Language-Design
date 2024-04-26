@@ -4,9 +4,7 @@ import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
-import ast.statements.Assignment;
-import ast.statements.Read;
-import ast.statements.Write;
+import ast.statements.*;
 import ast.types.FunctionType;
 import ast.types.VoidType;
 
@@ -18,10 +16,10 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
     private final AddressCGVisitor addressCGVisitor;
     private final CodeGenerator cg;
 
-    public ExecuteCGVisitor(ValueCGVisitor valueCGVisitor, AddressCGVisitor addressCGVisitor, CodeGenerator cg) {
+    public ExecuteCGVisitor(CodeGenerator cg, ValueCGVisitor valueCGVisitor, AddressCGVisitor addressCGVisitor) {
+        this.cg = cg;
         this.valueCGVisitor = valueCGVisitor;
         this.addressCGVisitor = addressCGVisitor;
-        this.cg = cg;
     }
 
     //only for statements
@@ -93,6 +91,77 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
 
 
     /**
+     * execute[[WhileStmt: statement -> expression statement*]] =
+     * 	    String condLabel = cg.nexTLabel();
+     * 	    String exitLabel = cg.nextLabel();
+     * 	    condLabel<:>
+     * 	    value[[expression]]
+     * 	    <jz > exitLabel
+     * 	    statement*.forEach(stmt -> execute[[stmt]]) // while body
+     * 	    <jmp > condLabel
+     * 	    exitLabel<:>
+     */
+    @Override
+    public Void visit(While whileStmt, Object param) {
+        String condLabel = cg.nextLabel();
+        String exitLabel = cg.nextLabel();
+        cg.line(whileStmt.getLine());
+
+        cg.comment("\t' * While");
+        cg.comment(condLabel + ":\n");
+
+        whileStmt.getExpression().accept(valueCGVisitor, param);
+        cg.jz(exitLabel);
+
+        for(Statement stmt : whileStmt.getBody()){
+            stmt.accept(this, param);
+        }
+
+        cg.jmp(condLabel);
+        cg.comment(exitLabel + ":\n");
+
+        return null;
+    }
+
+
+    /**
+     * execute[[IfElse: statement -> expression statement2* statement3*]] =
+     * 	    String elseLabel = cg.nextLabel();
+     * 	    String exitLabel = cg.nextLabel();
+     *  	value[[expression]]
+     * 	    <jz > elseLabel
+     *  	statement2*.forEach(stmt -> execute[[stmt]]) // if body
+     *  	<jmp > exitLabel
+     *   	elseLabel <:>
+     *  	statement3*.forEach(stmt -> execute[[stmt]]) // else body
+     *  	exitLabel <:>
+     */
+    @Override
+    public Void visit(IfElse ifElse, Object param) {
+        String elseLabel = cg.nextLabel();
+        String exitLabel = cg.nextLabel();
+
+        cg.line(ifElse.getLine());
+        cg.comment("\t' * If\n");
+
+        ifElse.getCondition().accept(valueCGVisitor, param);
+        cg.jz(elseLabel);
+
+        for(Statement stmt : ifElse.getIfBody()){ // if body
+            stmt.accept(this, param);
+        }
+
+        cg.jmp(exitLabel);
+        cg.comment(elseLabel + ":\n");
+
+        for(Statement stmt : ifElse.getElseBody()){ // else body
+            stmt.accept(this, param);
+        }
+        cg.comment(exitLabel + ":\n");
+        return null;
+    }
+
+    /**
      *
      * 	-- FUNCTION DEFINITION --
      * 	execute[[FuncDefinition definition -> type ID definition* statement*]] =
@@ -126,13 +195,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         FunctionType funcType = (FunctionType) funcDefinition.getType();
 
         cg.line(funcDefinition.getLine());
-        cg.comment("\t" + funcDefinition.getName() + ":\n");
-        if(!funcType.getParameters().isEmpty())
-            cg.comment("\t' * Parameters:");
+        cg.comment(funcDefinition.getName() + ":\n");
+
+        cg.comment("\t' * Parameters: \n");
         funcDefinition.getType().accept(this, param);
 
         if(!funcDefinition.getVarDefinitions().isEmpty())
-            cg.comment("\t' * Local variables:");
+            cg.comment("\t' * Local variables: \n");
 
         for(Definition localVariable : funcDefinition.getVarDefinitions()){
             localVariable.accept(this, param);
@@ -146,7 +215,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         }
 
         List<VarDefinition> localVariables = funcDefinition.getVarDefinitions();
-        int localBytes = funcDefinition.getVarDefinitions().isEmpty() ? 0 : localVariables.get(localVariables.size() - 1).getOffset();
+        int localBytes = funcDefinition.getVarDefinitions().isEmpty() ? 0 : -localVariables.get(localVariables.size() - 1).getOffset();
 
         int returnBytes = funcType.numberOfBytes();
 

@@ -4,6 +4,7 @@ import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
+import ast.errorhandler.ErrorHandler;
 import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
@@ -174,6 +175,7 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
     public TR visit(While whileStmt, TP param) {
         whileStmt.getExpression().accept(this, param);
+        ErrorHandler.getInstance();
         for(Statement st : whileStmt.getBody()){
             st.accept(this, param);
         }

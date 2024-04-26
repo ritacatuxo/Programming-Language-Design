@@ -15,6 +15,7 @@ public class CodeGenerator{
     private String input;
     private String output;
     private PrintWriter out;
+    private int labelNumber = 0;
 
     public CodeGenerator(String input, String output){
         this.input = input;
@@ -194,5 +195,19 @@ public class CodeGenerator{
         this.out.flush();
     }
 
+
+    public String nextLabel(){
+        String ret = "label" + labelNumber;
+        labelNumber++;
+        return ret;
+    }
+
+    public void jz(String label){
+        out.write("jz " + label + "\n");
+    }
+
+    public void jmp(String label){
+        out.write("jmp " + label + "\n");
+    }
 
 }

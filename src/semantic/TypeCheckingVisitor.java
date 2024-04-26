@@ -1,6 +1,7 @@
 package semantic;
 
 import ast.definitions.FuncDefinition;
+import ast.errorhandler.ErrorHandler;
 import ast.expressions.*;
 import ast.statements.*;
 import ast.types.*;
@@ -211,9 +212,11 @@ public class TypeCheckingVisitor extends AbstractVisitor<Void, Void> {
 
     public Void visit(While whileStmt, Void param){
         super.visit(whileStmt,param);
-
+        ErrorHandler.getInstance();
         // expression.type.mustBeBoolean()
+        whileStmt.getExpression().getType();
         whileStmt.getExpression().getType().mustBeBoolean(whileStmt.getExpression().getLine(), whileStmt.getExpression().getColumn());
+        ErrorHandler.getInstance();
         // pass the info down
         whileStmt.getBody().forEach(s -> s.setReturnType(whileStmt.getReturnType()));
         return null;

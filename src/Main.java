@@ -49,12 +49,6 @@ public class Main {
 		Visitor v = new TypeCheckingVisitor();
 		v.visit(ast, null);
 
-
-		System.out.println();
-		System.out.println("Running Offset Visitor...");
-		v = new OffsetVisitor();
-		v.visit(ast, null);
-
 		if (ErrorHandler.getInstance().anyErrors()) {
 			ErrorHandler.getInstance().showErrors(System.err);
 			System.err.println("Cannot proceed with code generation until errors are solved. Stopping...");
@@ -68,6 +62,10 @@ public class Main {
 			}
 		}
 
+		System.out.println();
+		System.out.println("Running Offset Visitor...");
+		v = new OffsetVisitor();
+		v.visit(ast, null);
 
 		System.out.println();
 		System.out.println("Running Code Generation Visitors...");

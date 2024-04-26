@@ -14,9 +14,13 @@ public class CGManager {
 
         cg = new CodeGenerator(inputFile, outputFile);
 
+
         address = new AddressCGVisitor(cg);
-        value = new ValueCGVisitor(cg, address);
-        execute = new ExecuteCGVisitor(value, address, cg);
+        value = new ValueCGVisitor(cg);
+        execute = new ExecuteCGVisitor(cg, value, address);
+
+        address.setValueCGVisitor(value);
+        value.setAddressCGVisitor(address);
     }
 
     /**
