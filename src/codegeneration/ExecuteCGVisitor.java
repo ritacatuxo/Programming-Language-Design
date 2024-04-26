@@ -7,6 +7,8 @@ import ast.definitions.VarDefinition;
 import ast.statements.Assignment;
 import ast.statements.Read;
 import ast.statements.Write;
+import ast.types.FunctionType;
+import ast.types.VoidType;
 
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
     @Override
     public Void visit(Read read, Object param) {
         cg.line(read.getLine());
-        cg.comment("\t' * Read");
+        cg.comment("\t' * Read\n");
 
         read.getExpression().accept(addressCGVisitor, param);
 
@@ -52,9 +54,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
     @Override
     public Void visit(Write write, Object param) {
         cg.line(write.getLine());
-        cg.comment("\t' * Write");
+        cg.comment("\t' * Write \n");
 
-        write.getExpression().accept(addressCGVisitor, param);
+        write.getExpression().accept(valueCGVisitor, param);
 
         cg.out(write.getExpression().getType());
 
@@ -91,7 +93,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
 
 
     /**
-     * execute[[FuncDefinition definition -> type ID definition* statement*]] =
+     *
+     * 	-- FUNCTION DEFINITION --
+     * 	execute[[FuncDefinition definition -> type ID definition* statement*]] =
      * 		ID <:>
      * 		<' * Parameters: >
      * 		execute[[type]]
@@ -99,23 +103,60 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
      * 		<' * Local variables: >
      * 		definition*.forEach(def -> execute[[def]]))
      *
-     * 		<enter > -definition*.get(definition*.size()-1).offset
+     * 		int paramsBytes = 0;
+     * 		for(VarDefinition param: type.getParameter){
+     * 			paramsBytes += param.type.numberOfBytes();
+     * 		        }
+     * 		int localsBytes = definition*.isEmpty() ? 0 : -definition*.get(definition*.size()-1).offset
+     * 		int returnBytes = type.returunType.numberOfBytes();
+     *
+     *
+     * 		if(definition*.size() > 0)
+     * 			<enter > -definition*.get(definition*.size()-1).offset
+     *
+     * 		// func body
+     * 		statement*.forEach(stmt -> execute[[stmt]])
+     *
+     * 		if(type.returnType instanceof VoidType)
+     * 			<ret > returnBytes <, > localsBytes <, > paramsBytes
+     *
      */
     @Override
     public Void visit(FuncDefinition funcDefinition, Object param) {
+        FunctionType funcType = (FunctionType) funcDefinition.getType();
+
         cg.line(funcDefinition.getLine());
-        cg.comment(funcDefinition.getName() + ":\n");
-        cg.comment("\t' * Parameters:");
+        cg.comment("\t" + funcDefinition.getName() + ":\n");
+        if(!funcType.getParameters().isEmpty())
+            cg.comment("\t' * Parameters:");
         funcDefinition.getType().accept(this, param);
 
-        cg.comment("\t' * Local variables:");
+        if(!funcDefinition.getVarDefinitions().isEmpty())
+            cg.comment("\t' * Local variables:");
+
         for(Definition localVariable : funcDefinition.getVarDefinitions()){
             localVariable.accept(this, param);
         }
 
-        List<VarDefinition> locals = funcDefinition.getVarDefinitions();
-        int totalLocalBytes = funcDefinition.getVarDefinitions().isEmpty() ? 0 : locals.get(locals.size() - 1).getOffset();
-        cg.comment("\tenter " + totalLocalBytes);
+        // BYTES FOR PARAMETERS, LOCAL VARIABLES AND RETURN
+        int paramBytes = 0;
+
+        for(VarDefinition parameter : funcType.getParameters()){
+            paramBytes += parameter.getType().numberOfBytes();
+        }
+
+        List<VarDefinition> localVariables = funcDefinition.getVarDefinitions();
+        int localBytes = funcDefinition.getVarDefinitions().isEmpty() ? 0 : localVariables.get(localVariables.size() - 1).getOffset();
+
+        int returnBytes = funcType.numberOfBytes();
+
+        if(localVariables.size() > 0)
+            cg.comment("\tenter " + localBytes);
+
+        funcDefinition.getStatements().forEach(stmt -> stmt.accept(this, param));
+
+        if(funcType.getReturnType() instanceof VoidType)
+            cg.comment("\tret " + returnBytes + ", " + localBytes + ", " + paramBytes);
 
         return null;
     }

@@ -22,7 +22,7 @@ public class OffsetVisitor extends AbstractVisitor<Void, Void> {
      */
     public Void visit(VarDefinition varDefinition, Void param) {
         if (varDefinition.getScope() == 0){ // global scope
-           varDefinition.setScope(globalsBytesSum);
+           varDefinition.setOffset(globalsBytesSum);
            globalsBytesSum += varDefinition.getType().numberOfBytes();
         }
 

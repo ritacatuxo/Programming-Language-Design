@@ -14,8 +14,12 @@ public class SymbolTable {
 		this.table.add(scope0);
 	}
 
+	public List<Map<String, Definition>> getTable() {
+		return table;
+	}
+
 	/**
-	 * Create a map and isnert it tot he table when a new scope is opened
+	 * Create a map and insert it to the table when a new scope is opened
 	 */
 	public void set() {
 		Map<String, Definition> lastScope = new HashMap<String, Definition>();

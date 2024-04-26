@@ -30,6 +30,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Object, Void>{
         if(variable.getDefinition().getScope() == 0)
             cg.pusha(variable.getDefinition().getOffset());
         else {
+            // push bp, the offset and then add
             cg.pushBP();
             cg.pushi(variable.getDefinition().getOffset());
             cg.add(IntType.getInstance());

@@ -98,6 +98,11 @@ public class CodeGenerator{
         out.flush();
     }
 
+    public void negation(){
+        out.write("\tnot\n");
+        out.flush();
+    }
+
     // comparison
     public void greaterThan(Type type){
         out.write("\tgt" + type.getSuffix() + "\n");
@@ -165,23 +170,23 @@ public class CodeGenerator{
     // conversion
 
     public void convertTo(Type from, Type to){
-        if (from.equals(IntType.getInstance())) {
-            if (to.equals(CharType.getInstance())) {
+        if (from instanceof IntType) {
+            if (to instanceof CharType) {
                 this.out.println("\ti2b"); // from int to char
-            } else if (to.equals(DoubleType.getInstance())) {
+            } else if (to instanceof DoubleType) {
                 this.out.println("\ti2f"); // from int to double
             }
-        } else if (from.equals(DoubleType.getInstance())) {
-            if (to.equals(IntType.getInstance())) {
+        } else if (from instanceof DoubleType) {
+            if (to instanceof IntType) {
                 this.out.println("\tf2i"); // from double to int
-            } else if (to.equals(CharType.getInstance())) {
+            } else if (to instanceof CharType) {
                 this.out.println("\tf2i"); // from double to int
                 this.out.println("\ti2b"); // from int to char
             }
-        } else if (from.equals(CharType.getInstance())) {
-            if (to.equals(IntType.getInstance())) {
+        } else if (from instanceof CharType) {
+            if (to instanceof IntType) {
                 this.out.println("\tb2i"); // from char to int
-            } else if (to.equals(DoubleType.getInstance())) {
+            } else if (to instanceof DoubleType) {
                 this.out.println("\tb2i"); // from char to int
                 this.out.println("\ti2f"); // from int to double
             }

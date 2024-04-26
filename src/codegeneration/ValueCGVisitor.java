@@ -87,12 +87,27 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object, Void>{
             case "-": cg.sub(arithmetic.getType()); break;
             case "*": cg.mul(arithmetic.getType()); break;
             case "/": cg.div(arithmetic.getType()); break;
-            case "%": cg.mod(arithmetic.getType()); break;
         }
 
         return null;
     }
 
+    public Void visit(Modulus modulus, Object param) {
+        modulus.getLeft().accept(this, param);
+        cg.convertTo(modulus.getLeft().getType(), modulus.getType());
+        modulus.getRight().accept(this, param);
+        cg.convertTo(modulus.getRight().getType(), modulus.getType());
+
+        cg.mod(modulus.getType());
+        return null;
+    }
+
+    @Override
+    public Void visit(UnaryNot negation, Object param) {
+        negation.getExpression().accept(this, param);
+        cg.negation();
+        return null;
+    }
 
     /**
      * value[[Comparison: expression1 -> expression2 expression3]] =
