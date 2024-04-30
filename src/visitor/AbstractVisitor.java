@@ -54,8 +54,9 @@ public abstract class AbstractVisitor<TP, TR> implements Visitor<TP, TR> {
 
 
     public TR visit(Cast cast, TP param) {
-        cast.getExpression().accept(this, param);
         cast.getCastType().accept(this, param);
+        cast.getExpression().accept(this, param);
+
         return null;
     }
 

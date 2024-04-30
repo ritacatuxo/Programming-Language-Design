@@ -217,4 +217,10 @@ public class CodeGenerator{
         out.write("\tjmp " + label + "\n");
     }
 
+
+    public void pop(Type type){
+        out.write("\tpop" + type.getSuffix() + "\n");
+        out.flush();
+    }
+
 }

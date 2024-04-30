@@ -49,7 +49,7 @@ expression returns [Expression ast]:
                                   {$ast = new FieldAccess($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast, $ID.text);} // FieldAccess (ID is the field)
           | '(' pt=primitive_type ')' e1=expression {$ast = new Cast($e1.ast.getLine(), $e1.ast.getColumn(), $pt.ast, $e1.ast);} // Cast
           | '-' e1=expression      {$ast = new UnaryMinus($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);} // UnaryMinus
-          | '!' e1=expression      {$ast = new Negation($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}   // Arithmetic
+          | '!' e1=expression      {$ast = new UnaryNot($e1.ast.getLine(), $e1.ast.getColumn(), $e1.ast);}   // Arithmetic
           | e1=expression OP=('*'|'/'|'%') e2=expression
                         {$ast = Arithmetic.arithmeticFactory($OP.text, $e1.ast, $e2.ast);} // % has its own type but the same precedence as the other arithmetics ops * /
           | e1=expression OP=('+'|'-') e2=expression
@@ -63,6 +63,8 @@ expression returns [Expression ast]:
           | IC=INT_CONSTANT  {$ast = new IntLiteral($IC.getLine(), $IC.getCharPositionInLine()+1, LexerHelper.lexemeToInt($IC.text)); } //  Intliteral
           | CC=CHAR_CONSTANT {$ast = new CharLiteral($CC.getLine(), $CC.getCharPositionInLine()+1, LexerHelper.lexemeToChar($CC.text)); } // CharLiteral
           | RC=REAL_CONSTANT {$ast = new DoubleLiteral($RC.getLine(), $RC.getCharPositionInLine()+1, LexerHelper.lexemeToReal($RC.text)); } // DoubleLiteral
+          | '(' e1=expression ')'
+                             {$ast = $e1.ast;}
           ;
 
 function_invocation returns [FunctionInvocation ast]:

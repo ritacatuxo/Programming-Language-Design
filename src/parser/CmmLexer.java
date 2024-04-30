@@ -1,4 +1,4 @@
-// Generated from D:/segundo cuatri/DLP/laboratorios/workspace/src/parser/Cmm.g4 by ANTLR 4.13.1
+// Generated from D:/segundo cuatri/DLP/para borrar/src/parser/Cmm.g4 by ANTLR 4.13.1
 package parser;
 
     import ast.*;

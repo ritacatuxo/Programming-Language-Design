@@ -4,6 +4,8 @@ import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FuncDefinition;
 import ast.definitions.VarDefinition;
+import ast.expressions.Expression;
+import ast.expressions.FunctionInvocation;
 import ast.statements.*;
 import ast.types.FunctionType;
 import ast.types.VoidType;
@@ -222,7 +224,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         if(localVariables.size() > 0)
             cg.comment("\tenter " + localBytes);
 
-        funcDefinition.getStatements().forEach(stmt -> stmt.accept(this, param));
+        int finalParamBytes = paramBytes;
+        funcDefinition.getStatements().forEach(stmt -> stmt.accept(this, new ReturnDTO(returnBytes, localBytes, finalParamBytes)));
 
         if(funcType.getReturnType() instanceof VoidType)
             cg.comment("\tret " + returnBytes + ", " + localBytes + ", " + paramBytes);
@@ -252,6 +255,49 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         for (Definition definition : program.getBody()){
             if (definition instanceof FuncDefinition)
                 definition.accept(this, param);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * execute[[Return: statement → exp]](int bytesReturn, int bytesLocals, int bytesArgs) =
+     * 	    value[[exp]]
+     * 	    <ret > bytesReturn <, > bytesLocals <, > bytesArgs
+     */
+    @Override
+    public Void visit(Return ret, Object param) {
+
+        ReturnDTO returnDTO = (ReturnDTO) param;
+
+        ret.getRet().accept(this, param); // param or null?
+        cg.comment("\tret " + returnDTO.bytesReturn() + ", " + returnDTO.bytesLocals() + ", " + returnDTO.bytesParams());
+
+        return null;
+    }
+
+
+    /**
+     * execute[[FuncInvocation: statement -> expression1 expression2*]] =
+     * 	    expression2*.forEach(arg -> value[[arg]]) 					// push arguments
+     * 	    <call > expression1.name									// call the function
+     * 	    if(! expression1.type.returnType instanceof VoidType)
+     * 		    <pop> expression1.type.returnType.suffix()		        // we pop when return type is different from void
+     */
+    @Override
+    public Void visit(FunctionInvocation functionInvocation, Object param) {
+
+        for(Expression arg : functionInvocation.getParameters()){
+            arg.accept(valueCGVisitor, param);
+        }
+
+        cg.call(functionInvocation.getVar().getName());
+
+        FunctionType funcType = (FunctionType) functionInvocation.getVar().getType();
+
+        if(!(funcType.getReturnType() instanceof VoidType)){
+            cg.pop(funcType.getReturnType());
         }
 
         return null;

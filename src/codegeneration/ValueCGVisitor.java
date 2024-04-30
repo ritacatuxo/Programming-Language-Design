@@ -219,4 +219,19 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object, Void>{
         cg.load(indexing.getType());
         return null;
     }
+
+    /**
+     * value[[FuncInvocation: expression1 -> expression2 expression3*]] =
+     * 	expression3*.forEach(arg -> value[[arg]])
+     * 	<call > expression1.name
+     */
+    @Override
+    public Void visit(FunctionInvocation functionInvocation, Object param) {
+        for(Expression arg : functionInvocation.getParameters()){
+            arg.accept(this, arg);
+        }
+        cg.call(functionInvocation.getVar().getName());
+
+        return null;
+    }
 }
