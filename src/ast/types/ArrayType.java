@@ -44,10 +44,9 @@ public class ArrayType extends AbstractType{
 
     @Override
     public String toString() {
-        return "ArrayType{" +
-                "size=" + size +
-                ", type=" + type +
-                '}';
+        return "[" + size +
+                ", " + type +
+                ']';
     }
 
     @Override

@@ -196,7 +196,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         cg.line(funcDefinition.getLine());
         cg.comment(funcDefinition.getName() + ":\n");
 
-        cg.comment("\t' * Parameters: \n");
+        if(!funcType.getParameters().isEmpty())
+            cg.comment("\t' * Parameters: \n");
         funcDefinition.getType().accept(this, param);
 
         if(!funcDefinition.getVarDefinitions().isEmpty())
@@ -237,12 +238,20 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
      */
     @Override
     public Void visit(Program program, Object param) {
-        cg.comment("' Invocation to the main function\n");
+
+        cg.comment("\n\t' * Global variable(s)\n");
+        for (Definition definition : program.getBody()){
+            if (definition instanceof VarDefinition)
+                definition.accept(this, param);
+        }
+
+        cg.comment("\n ' Invocation to the main function\n");
         cg.call("main");
         cg.halt();
 
-        for(Definition def : program.getBody()){
-            def.accept(this, param);
+        for (Definition definition : program.getBody()){
+            if (definition instanceof FuncDefinition)
+                definition.accept(this, param);
         }
 
         return null;

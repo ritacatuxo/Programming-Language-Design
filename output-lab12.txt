@@ -1,7 +1,13 @@
-' Invocation to the main function
+
+
+ #source "input-lab12.txt"
+
+	' *Global variable(s)
+	' * [10, double] v  (offset 0 )
+
+ ' Invocation to the main function
 	call main
 	halt
-	' * ArrayType{size=10, type=double} v  (offset 0 )
 
 #line 4
 main:
@@ -10,8 +16,8 @@ main:
 	' * double value  (offset -4 )
 	' * int i  (offset -6 )
 	' * int j  (offset -8 )
-	' * ArrayType{size=4, type=ArrayType{size=5, type=int}} w  (offset -48 )
-	' * RecordType{recordFields=[RecordField{ type=int, fieldName=day}, RecordField{ type=int, fieldName=month}, RecordField{ type=int, fieldName=year}]} date  (offset -54 )
+	' * [4, [5, int]] w  (offset -48 )
+	' * record([(day x int), (month x int), (year x int)]) date  (offset -54 )
 	enter 54
 #line 13
 	' * Read

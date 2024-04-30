@@ -59,9 +59,6 @@ public class RecordField implements ASTNode {
 
     @Override
     public String toString() {
-        return "RecordField{" +
-                " type=" + type +
-                ", fieldName=" + fieldName +
-                '}';
+        return "(" + fieldName + " x " + type + ')';
     }
 }

@@ -93,4 +93,10 @@ public class CharType extends AbstractType{
     @Override
     public void mustBeWritable(int line, int column){
     }
+
+    public void returnAs(int line, int column, Type t){
+        if (!(t instanceof CharType))
+            new ErrorType(line, column, "[TYPECHECKING] Type " + t + " is not equivalent to char");
+    }
+
 }

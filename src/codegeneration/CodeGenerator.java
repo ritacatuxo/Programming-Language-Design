@@ -26,6 +26,13 @@ public class CodeGenerator{
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        writeSource();
+    }
+
+
+    public void writeSource(){
+        out.write("\n\n #source \"" + input + "\"\n");
+        out.flush();
     }
 
     public void comment(String comment){

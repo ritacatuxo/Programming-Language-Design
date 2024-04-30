@@ -1,13 +1,19 @@
-' Invocation to the main function
-	call main
-	halt
+
+
+ #source "input-lab11.txt"
+
+	' * Global variable(s)
 	' * char c  (offset 0 )
 	' * int a  (offset 1 )
 	' * double r  (offset 3 )
 	' * int i  (offset 7 )
 
+ ' Invocation to the main function
+	call main
+	halt
+
 #line 6
-	main:
+main:
 
 #line 7
 	pusha 0

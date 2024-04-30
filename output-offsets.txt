@@ -1,0 +1,80 @@
+
+
+ #source "input-offsets.txt"
+
+	' * Global variable(s)
+	' * int i  (offset 0 )
+	' * double r  (offset 2 )
+	' * char c  (offset 6 )
+
+ ' Invocation to the main function
+	call main
+	halt
+
+#line 8
+f:
+	' * Parameters: 
+	' * Local variables: 
+	' * double lr  (offset -4 )
+	' * int li  (offset -6 )
+	enter 6
+#line 11
+	push bp 
+	pushi -6
+	addi
+	push bp 
+	pushi 4
+	addi
+	loadi
+	storei
+
+#line 12
+	push bp 
+	pushi -4
+	addi
+	push bp 
+	pushi 6
+	addi
+	loadf
+	storef
+
+#line 17
+main:
+	' * Local variables: 
+	' * record([(integer x int), (character x char)]) pair  (offset -3 )
+	enter 3
+#line 23
+	pusha 0
+	pushi 3
+	storei
+
+#line 24
+	pusha 6
+	pushb 97
+	storeb
+
+#line 25
+	pusha 2
+	pushf 3.8
+	storef
+
+#line 26
+	push bp 
+	pushi -3
+	addi
+	pushi 0
+	addi
+	pusha 0
+	loadi
+	storei
+
+#line 27
+	push bp 
+	pushi -3
+	addi
+	pushi 2
+	addi
+	pusha 6
+	loadb
+	storeb
+	ret 0, 3, 0

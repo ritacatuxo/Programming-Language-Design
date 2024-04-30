@@ -6,6 +6,7 @@ import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FunctionType extends AbstractType{
 
@@ -53,8 +54,7 @@ public class FunctionType extends AbstractType{
         // check the type of each argument is the same as the type each parameters
         else {
             for (int i = 0; i < paramsType.size(); i++) {
-
-                if (!paramsType.get(i).getType().equals(parameters.get(i).getType()))
+                if (!paramsType.get(i).getType().toString().equals(parameters.get(i).getType().toString()))
                     return new ErrorType(paramsType.get(i).getLine(), paramsType.get(i).getColumn(),
                             "[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
                         "The arguments do not match with the parameters");
