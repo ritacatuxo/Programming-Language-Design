@@ -7,6 +7,8 @@ import ast.types.RecordField;
 import ast.types.RecordType;
 import visitor.AbstractVisitor;
 
+import java.util.List;
+
 public class OffsetVisitor extends AbstractVisitor<Void, Void> {
 
     private int globalsBytesSum = 0;
@@ -70,12 +72,15 @@ public class OffsetVisitor extends AbstractVisitor<Void, Void> {
     public Void visit(FunctionType functionType, Void param) {
         super.visit(functionType, param);
 
-        int paramsBytesSum = 0;
+        int paramsBytesSum = 0  ;
 
-        for(VarDefinition varDef : functionType.getParameters()) {
-            varDef.setOffset(paramsBytesSum + 4);
-            paramsBytesSum += varDef.getType().numberOfBytes();
+        List<VarDefinition> parameters = functionType.getParameters();
+        for(int i = parameters.size() - 1; i >= 0; i --){
+            VarDefinition parameter = parameters.get(i);
+            parameter.setOffset(paramsBytesSum + 4);
+            paramsBytesSum += parameter.getType().numberOfBytes();
         }
+
         return null;
     }
 

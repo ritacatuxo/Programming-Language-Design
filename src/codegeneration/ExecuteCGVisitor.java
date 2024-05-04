@@ -86,7 +86,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
     @Override
     public Void visit(VarDefinition varDefinition, Object param) {
         cg.comment("\t' * " + varDefinition.getType() + " " + varDefinition.getName() + " " +
-                " (offset " + varDefinition.getOffset() + " )\n");
+                " (offset " + varDefinition.getOffset() + ")\n");
         return null;
     }
 
@@ -114,6 +114,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         whileStmt.getExpression().accept(valueCGVisitor, param);
         cg.jz(exitLabel);
 
+        cg.comment("\t' * Body of the while statement\n");
         for(Statement stmt : whileStmt.getBody()){
             stmt.accept(this, param);
         }
@@ -198,13 +199,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         cg.line(funcDefinition.getLine());
         cg.comment(funcDefinition.getName() + ":\n");
 
-        if(!funcType.getParameters().isEmpty())
-            cg.comment("\t' * Parameters: \n");
-        funcDefinition.getType().accept(this, param);
 
-        if(!funcDefinition.getVarDefinitions().isEmpty())
-            cg.comment("\t' * Local variables: \n");
+        cg.comment("\t' * Parameters: \n");
+        for (VarDefinition p : funcType.getParameters())
+            p.accept(this, param);
 
+
+        cg.comment("\t' * Local variables: \n");
         for(Definition localVariable : funcDefinition.getVarDefinitions()){
             localVariable.accept(this, param);
         }
@@ -219,16 +220,16 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         List<VarDefinition> localVariables = funcDefinition.getVarDefinitions();
         int localBytes = funcDefinition.getVarDefinitions().isEmpty() ? 0 : -localVariables.get(localVariables.size() - 1).getOffset();
 
-        int returnBytes = funcType.numberOfBytes();
+        int returnBytes = funcType.getReturnType().numberOfBytes();
 
-        if(localVariables.size() > 0)
-            cg.comment("\tenter " + localBytes);
+        //if(localVariables.size() > 0)
+        cg.comment("\tenter " + localBytes + "\n");
 
         int finalParamBytes = paramBytes;
         funcDefinition.getStatements().forEach(stmt -> stmt.accept(this, new ReturnDTO(returnBytes, localBytes, finalParamBytes)));
 
         if(funcType.getReturnType() instanceof VoidType)
-            cg.comment("\tret " + returnBytes + ", " + localBytes + ", " + paramBytes);
+            cg.comment("\tret " + returnBytes + ", " + localBytes + ", " + paramBytes + "\n");
 
         return null;
     }
@@ -269,10 +270,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
     @Override
     public Void visit(Return ret, Object param) {
 
+        cg.line(ret.getLine());
+        cg.comment("\t' * Return\n");
+
         ReturnDTO returnDTO = (ReturnDTO) param;
 
-        ret.getRet().accept(this, param); // param or null?
-        cg.comment("\tret " + returnDTO.bytesReturn() + ", " + returnDTO.bytesLocals() + ", " + returnDTO.bytesParams());
+        ret.getRet().accept(valueCGVisitor, param);
+        cg.comment("\tret " + returnDTO.bytesReturn() + ", " + returnDTO.bytesLocals() + ", " + returnDTO.bytesParams() + "\n");
 
         return null;
     }
@@ -287,6 +291,8 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
      */
     @Override
     public Void visit(FunctionInvocation functionInvocation, Object param) {
+
+        cg.line(functionInvocation.getLine());
 
         for(Expression arg : functionInvocation.getParameters()){
             arg.accept(valueCGVisitor, param);
