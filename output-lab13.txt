@@ -16,6 +16,8 @@
 
 #line 12
 p:
+	' * Parameters: 
+	' * Local variables: 
 	enter 0
 	ret 0, 0, 0
 
@@ -281,6 +283,7 @@ show:
 
 #line 47
 main:
+	' * Parameters: 
 	' * Local variables: 
 	' * int i  (offset -2)
 	enter 2

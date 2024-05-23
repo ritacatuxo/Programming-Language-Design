@@ -76,12 +76,12 @@ public class CharType extends AbstractType{
     }
 
     @Override
-    public Type assignTo(int line, int column, Type t) {
+    public void assignTo(int line, int column, Type t) {
         if (t instanceof ErrorType)
-            return t;
+            return;
         if (t instanceof CharType)
-            return t;
-        return new ErrorType(line, column,
+            return;
+        new ErrorType(line, column,
                 String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
                         "An assignment operation cannot be performed for the types char and %s", t));
     }
@@ -96,7 +96,8 @@ public class CharType extends AbstractType{
 
     public void returnAs(int line, int column, Type t){
         if (!(t instanceof CharType))
-            new ErrorType(line, column, "[TYPECHECKING] Type " + t + " is not equivalent to char");
+            new ErrorType(line, column, "[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                    "Cannot return type char for a function with return type " + t);
     }
 
 }

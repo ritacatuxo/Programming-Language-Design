@@ -3,9 +3,6 @@ package ast.types;
 import ast.ASTNode;
 import visitor.Visitor;
 
-// Struct {
-//     int field; <-- NO SON VARDEFINITINS bc necesitan .field
-// } structName;
 public class RecordField implements ASTNode {
 
     private int line;

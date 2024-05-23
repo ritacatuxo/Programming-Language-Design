@@ -2,8 +2,8 @@
 
  #source "input-lab12.txt"
 
-	' *Global variable(s)
-	' * [10, double] v  (offset 0 )
+	' * Global variable(s)
+	' * [10, double] v  (offset 0)
 
  ' Invocation to the main function
 	call main
@@ -13,12 +13,13 @@
 main:
 	' * Parameters: 
 	' * Local variables: 
-	' * double value  (offset -4 )
-	' * int i  (offset -6 )
-	' * int j  (offset -8 )
-	' * [4, [5, int]] w  (offset -48 )
-	' * record([(day x int), (month x int), (year x int)]) date  (offset -54 )
+	' * double value  (offset -4)
+	' * int i  (offset -6)
+	' * int j  (offset -8)
+	' * [4, [5, int]] w  (offset -48)
+	' * record([(day x int), (month x int), (year x int)]) date  (offset -54)
 	enter 54
+
 #line 13
 	' * Read
 	push bp 
@@ -135,6 +136,7 @@ main:
 	pushi 10
 	lti
 	jz  label1
+	' * Body of the while statement
 
 #line 22
 	pusha 0
@@ -276,6 +278,7 @@ main:
 	pushi 4
 	lti
 	jz  label5
+	' * Body of the while statement
 
 #line 34
 	push bp 
@@ -294,6 +297,7 @@ main:
 	pushi 5
 	lti
 	jz  label7
+	' * Body of the while statement
 
 #line 36
 	push bp 

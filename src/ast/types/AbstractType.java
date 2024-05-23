@@ -105,10 +105,10 @@ public abstract class AbstractType extends AbstractASTNode implements Type {
 	}
 
 	@Override
-	public Type assignTo(int line, int column, Type t) {
+	public void assignTo(int line, int column, Type t) {
 		//if (this instanceof ErrorType)
 		//	return t;
-		return new ErrorType(line, column,
+		new ErrorType(line, column,
 				String.format("[TYPE CHECKING] " + "[Line: " + line + " Column: " + column + "] " +
 						//"Cannot assign a " + t + " to " + this));
 						"The two sides of the assigment must have the same built-in type"));

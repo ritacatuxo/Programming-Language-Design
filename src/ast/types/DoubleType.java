@@ -75,12 +75,12 @@ public class DoubleType extends AbstractType{
     }
 
     @Override
-    public Type assignTo(int line, int column, Type t) {
+    public void assignTo(int line, int column, Type t) {
         if (t instanceof ErrorType)
-            return t;
+            return;
         if (t instanceof DoubleType)
-            return t;
-        return new ErrorType(line, column,
+            return;
+        new ErrorType(line, column,
                 String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
                         "An assignment operation cannot be performed for the types %s and double", t));
     }
@@ -95,6 +95,7 @@ public class DoubleType extends AbstractType{
     }
     public void returnAs(int line, int column, Type t){
         if (!(t instanceof DoubleType))
-            new ErrorType(line, column, "[TYPECHECKING] Type " + t + " is not equivalent to double");
+            new ErrorType(line, column, "[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                    "Cannot return type double for a function with return type " + t);
     }
 }

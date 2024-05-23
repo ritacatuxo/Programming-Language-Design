@@ -27,7 +27,7 @@ public interface Type extends ASTNode {
     Type parenthesis(int line, int column, List<Expression> paramsType );
 
     // statements
-    Type assignTo(int line, int column, Type t);
+    void assignTo(int line, int column, Type t);
     void mustBeReadable(int line, int column);
     void mustBeWritable(int line, int column);
     void mustBeBoolean(int line, int column);

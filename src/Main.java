@@ -15,6 +15,23 @@ public class Main {
 
 	public static void main(String... args) throws Exception {
 
+
+
+
+		// 1 arg
+		/*
+		if (args.length < 1) {
+			System.err.println("Please, pass both the input and output files");
+			return;
+		}
+
+		String inputFilepath = args[0];
+		System.out.println("Processing '" + inputFilepath);
+		*/
+
+
+		// 2 args
+
 		// CODE FOR PARSER ------------------------
 
 		if (args.length < 2) {
@@ -25,6 +42,8 @@ public class Main {
 		String inputFilepath = args[0];
 		String outputFilepath = args[1];
 		System.out.println("Processing '" + inputFilepath + "' into '" + outputFilepath + "'...");
+
+
 
 		// create a lexer that feeds off of input CharStream
 		CharStream input = CharStreams.fromFileName(args[0]);
@@ -44,6 +63,7 @@ public class Main {
 
 
 
+
 		System.out.println();
 		System.out.println("Running Type Checking Visitor...");
 		Visitor v = new TypeCheckingVisitor();
@@ -51,7 +71,6 @@ public class Main {
 
 		if (ErrorHandler.getInstance().anyErrors()) {
 			ErrorHandler.getInstance().showErrors(System.err);
-			System.err.println("Cannot proceed with code generation until errors are solved. Stopping...");
 			return;
 		} else {
 			if (parser.getNumberOfSyntaxErrors() <= 0) {
@@ -66,6 +85,7 @@ public class Main {
 		System.out.println("Running Offset Visitor...");
 		v = new OffsetVisitor();
 		v.visit(ast, null);
+
 
 		System.out.println();
 		System.out.println("Running Code Generation Visitors...");

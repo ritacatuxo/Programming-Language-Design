@@ -21,7 +21,7 @@ public class RecordType extends AbstractType {
 
 
     /**
-     * Adss all the recordFields passed as parameter to the fields of the RecordType, by checking whether they repeated
+     * Adds all the recordFields passed as parameter to the fields of the RecordType, by checking whether they repeated
      */
     public void addRecordFields(List<RecordField> recordFields) {
 
@@ -29,7 +29,8 @@ public class RecordType extends AbstractType {
         {
             if(repeatedFieldName(field)) {
                 new ErrorType(field.getLine(), field.getColumn(),
-                        String.format("The struct field \"%s\" has already been defined.", field.getFieldName()));
+                        "[SEMANTIC ERROR] [Line: " + field.getLine() + " Column: " + field.getColumn() + "] " +
+                                "The struct field " + field.getFieldName() + " has already been defined.");
             }
             else {
                 this.recordFields.add(field);
@@ -52,12 +53,13 @@ public class RecordType extends AbstractType {
         return recordFields;
     }
 
-    public RecordField getRecordFile(String fieldName) {
+    public RecordField getRecordField(String fieldName) {
         for (RecordField rf : this.recordFields) {
             if (rf.getFieldName().equals(fieldName))
                 return rf;
         }
-        throw new RuntimeException("There is no field with fieldName '" + fieldName + "'");
+
+        throw new RuntimeException("There is no field with name '" + fieldName + "'");
     }
 
 

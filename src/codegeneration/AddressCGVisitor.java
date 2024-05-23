@@ -59,7 +59,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Object, Void>{
     public Void visit(FieldAccess fieldAccess, Object param) {
         fieldAccess.getExpression().accept(this, param);
         RecordType record = (RecordType) fieldAccess.getExpression().getType();
-        cg.pushi(record.getRecordFile(fieldAccess.getFieldName()).getOffset());
+        cg.pushi(record.getRecordField(fieldAccess.getFieldName()).getOffset());
         cg.add(IntType.getInstance());
         return null;
     }

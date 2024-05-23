@@ -109,12 +109,14 @@ public class IntType extends AbstractType{
     }
 
     @Override
-    public Type assignTo(int line, int column, Type t) {
+    public void assignTo(int line, int column, Type t) {
         if (t instanceof ErrorType)
-            return t;
+            return;
         if (t instanceof IntType)
-            return t;
-        return new ErrorType(line, column,
+            return;
+        if (t instanceof DoubleType) //---
+            return;
+        new ErrorType(line, column,
                 String.format("[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
                         "An assignment operation cannot be performed for the types int and %s", t));
     }
@@ -131,7 +133,8 @@ public class IntType extends AbstractType{
 
     public void returnAs(int line, int column, Type t){
         if (!(t instanceof IntType))
-            new ErrorType(line, column, "[TYPECHECKING] Type " + t + " is not equivalent to Integer");
+            new ErrorType(line, column, "[TYPE CHECKING] [Line: " + line + " Column: " + column + "] " +
+                    "Cannot return type integer for a function with return type " + t);
     }
 
 
