@@ -18,7 +18,8 @@ public class Main {
 
 
 
-		// 1 arg
+		// 1 argument -----
+
 		/*
 		if (args.length < 1) {
 			System.err.println("Please, pass both the input and output files");
@@ -30,9 +31,11 @@ public class Main {
 		*/
 
 
-		// 2 args
 
-		// CODE FOR PARSER ------------------------
+
+
+		// 2 arguments -----
+
 
 		if (args.length < 2) {
 			System.err.println("Please, pass both the input and output files");

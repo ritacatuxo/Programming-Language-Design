@@ -37,7 +37,6 @@ public class RecordType extends AbstractType {
             }
         }
 
-        //this.recordFields.addAll(fields);
     }
 
     private boolean repeatedFieldName(RecordField rf){

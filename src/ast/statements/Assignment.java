@@ -5,7 +5,6 @@ import visitor.Visitor;
 
 public class Assignment extends AbstractStatement {
 
-    // exp = exp
     private Expression left;
     private Expression right;
 

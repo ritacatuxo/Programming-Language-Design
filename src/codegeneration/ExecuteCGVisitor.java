@@ -12,6 +12,8 @@ import ast.types.VoidType;
 
 import java.util.List;
 
+
+//only for statements, definitions and program
 public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
 
     private final ValueCGVisitor valueCGVisitor;
@@ -24,7 +26,6 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object, Void> {
         this.addressCGVisitor = addressCGVisitor;
     }
 
-    //only for statements
 
     /**
      * execute[[Read: statement -> expression]] =

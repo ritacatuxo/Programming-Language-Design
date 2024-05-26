@@ -24,8 +24,7 @@ public class CGManager {
     }
 
     /**
-     * Starts the code generation phase by running the ExecuteVisitor on the specified node (usually Program).
-     * @param node
+     * Starts the code generation phase by running the ExecuteVisitor on the specified node
      */
     public void run(ASTNode node){
         node.accept(execute, null);
