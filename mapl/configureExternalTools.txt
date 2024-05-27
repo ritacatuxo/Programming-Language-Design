@@ -1,0 +1,18 @@
+File -> Settings -> Tools -> External Tools
+Añadir:
+    Name: Debug Mapl
+    Program: $ProjectFileDir$\mapl\GVM.exe
+    Arguments: output.txt
+    Working directory: $ProjectFileDir$
+    Añadir atajo: Alt+D
+
+    Name: Run Mapl
+    Program: $ProjectFileDir$\mapl\TextVM.exe
+    Arguments: output.txt
+    Working directory: $ProjectFileDir$
+    Añadir atajo: Alt+E
+
+File -> Settings -> Keymap -> External Tools
+Añadir:
+    Debug Mapl: Alt+D
+    Run Mapl: Alt+E
